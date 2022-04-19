@@ -152,7 +152,7 @@ div#sel > section > div > input:disabled{
 }
 div#sel > section .not{
     display: none;
-    font-size: 3vh;
+    font-size: 3    vh;
 }
 div#btnbar{
     position: absolute;

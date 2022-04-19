@@ -25,12 +25,13 @@ osdir(){
 }
 
 mmc(){
-	multimc=$(find ~ -type d -iname "*lti*mc" 2>/dev/null | head -1)
+	multimc=$(find ~ -iname '*lti*mc.cfg' -printf '%h\n' 2>/dev/null | sort -u | head -1)
 	if [[ ! -z $multimc ]]; then
 		java=true
-		javaFolder="$multimc/bin"
+		javaFolder="$multimc"
 		JLauncher="multimc"
-		javaWorlds="$(ls -d $multimc/bin/instances/*1.14.4* | head -1)/saves"
+		javaWorlds="$(ls -d $multimc/instances/*1.14.4* | head -1)/saves"
+		[[ $javaWorlds == "/saves" ]] && javaWorlds="$$multimc/instances/1.14.4/saves"
     else
         javaWorlds=""
 	fi
