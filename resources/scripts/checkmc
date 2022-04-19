@@ -1,0 +1,71 @@
+#!/bin/sh
+
+# Default variables
+java=false
+bedrock=false
+
+osdir(){
+	if [[ ! -z $2 ]]; then
+		javaFolder="$2"
+        bedrockFolder="$2"
+		return
+    fi
+
+	case $1 in
+		"Darwin")
+			javaFolder=~/"Library/Application Support/minecraft"
+			bedrockFolder=~/"Library/Application Support/mcpelauncher/games/com.mojang"
+			;;
+		*)
+			javaFolder=~/".minecraft"
+			bedrockFolder=~/".var/app/io.mrarm.mcpelauncher/data/mcpelauncher/games/com.mojang"
+			[[ ! -d $bedrockFolder ]] && bedrockFolder=~/".local/share/mcpelauncher/games/com.mojang"
+			;;
+	esac
+}
+
+mmc(){
+	multimc=$(find ~ -type d -iname "*lti*mc" 2>/dev/null | head -1)
+	if [[ ! -z $multimc ]]; then
+		java=true
+		javaFolder="$multimc/bin"
+		JLauncher="multimc"
+		javaWorlds="$(ls -d $multimc/bin/instances/*1.14.4* | head -1)/saves"
+    else
+        javaWorlds=""
+	fi
+}
+
+dircheck(){
+    if [[ -d $javaFolder ]]; then
+    	if [[ -d "$javaFolder/home" ]]; then
+    		JLauncher="tl"
+    		javaWorlds="$(ls -d $javaFolder/home/*1.14* | head -1)/saves"
+    	else
+    		JLauncher="default"
+    		javaWorlds="$javaFolder/saves"
+    	fi
+
+    	if [[ -d $javaWorlds ]];then
+            java=true 
+        else
+            javaWorlds=""
+            [[ -z $2 ]] && mmc
+        fi
+        
+    elif [[ -z $2 ]]; then
+        mmc
+    fi
+
+    if [[ -d $bedrockFolder ]]; then
+    	bedrockWorlds="$bedrockFolder/minecraftWorlds"
+    	[[ -d $bedrockWorlds ]] && bedrock=true || bedrockWorlds=""
+    else
+        bedrockFolder=""
+    fi
+}
+
+osdir "$@"
+dircheck "$@"
+
+echo "{\"java\":$java,\"bedrock\":$bedrock,\"javaFolder\":\"$javaFolder\",\"bedrockFolder\":\"$bedrockFolder\",\"javaWorlds\":\"$javaWorlds\",\"bedrockWorlds\":\"$bedrockWorlds\",\"JLauncher\":\"$JLauncher\"}"

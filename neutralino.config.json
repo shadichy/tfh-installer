@@ -1,0 +1,53 @@
+{
+  "applicationId": "js.teamfuho.hpvninstaller",
+  "version": "1.0.0",
+  "defaultMode": "window",
+  "port": 0,
+  "documentRoot": "/resources/",
+  "url": "/",
+  "enableServer": true,
+  "enableNativeAPI": true,
+  "nativeAllowList": [
+    "app.*",
+    "os.*",
+    "filesystem.*",
+    "extensions.*"
+  ],
+  "globalVariables": {
+  },
+  "modes": {
+    "window": {
+      "title": "Happy Vietnam Installer",
+      "width": 820,
+      "height": 500,
+      "minWidth": 820,
+      "minHeight": 500,
+      "fullScreen": false,
+      "alwaysOnTop": false,
+      "icon": "/resources/icons/appIcon.png",
+      "enableInspector": true,
+      "borderless": false,
+      "maximize": false,
+      "hidden": false,
+      "resizable": false,
+      "exitProcessOnClose": false
+    },
+    "browser": {},
+    "cloud": {},
+    "chrome": {
+      "width": 820,
+      "height": 500,
+      "args": "--user-agent=\"Neutralinojs chrome mode\"",
+      "nativeBlockList": [
+      ]
+    }
+  },
+  "cli": {
+    "binaryName": "hpvn",
+    "resourcesPath": "/resources/",
+    "extensionsPath": "/extensions/",
+    "clientLibrary": "/resources/js/neutralino.js",
+    "binaryVersion": "4.4.0",
+    "clientVersion": "3.3.0"
+  }
+}

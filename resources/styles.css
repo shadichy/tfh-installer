@@ -1,0 +1,203 @@
+#neutralinoapp {
+    text-align: center;
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+
+#neutralinoapp h1{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 20px;
+}
+
+#neutralinoapp > div {
+    font-size: 16px;
+    font-weight: normal;
+}
+p,h1,label{
+    color: #002049;
+    font-family: bvn,sans-serif;
+}
+body{
+    margin: 0;
+    overflow: hidden;
+}
+main#ins{
+    display: grid;
+    grid-template-columns: 3fr 7fr;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+main#ins > div{
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+main#ins > div:first-child{
+    background-image: url('res/theme.jpg') ;
+    background-size: cover;
+}
+main#ins > div:first-child > img{
+    width: 12vh;
+    height: 12vh;
+    margin: 5vh;
+    cursor: pointer;
+}
+main#ins > div:last-child{
+    padding: 3vh;
+    background-color: #f2f7fb;
+}
+main#ins > div:last-child > nav{
+    height: 10vh;
+    justify-content: space-between;
+}
+main#ins > div:last-child > .part{
+    width: 100%;
+    box-shadow:0 0 5px 0 rgb(43 43 43 / 10%), 0 11px 6px -7px rgb(43 43 43 / 10%);
+    border-radius: 2vh;
+    padding: 1vh 1vw;
+    box-sizing: border-box;
+    background-color: #fff;
+    margin-bottom: 3vh;
+    display: flex;
+}
+main#ins > div:last-child > nav > ul{
+    display: flex;
+    margin: 0;
+}
+main#ins > div:last-child > nav > ul > li{
+    height: 8vh;
+    width: 8vh;
+    list-style: none;
+    /* margin-left: 1vw; */
+}
+main#ins > div:last-child > nav > ul > li > svg{
+    width: 6vh;
+    height: 6vh;
+    margin: 1vh;
+    fill: #002049;
+    cursor: pointer;
+}
+.part:last-child{
+    height: 81vh;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    justify-content: center;
+    padding-bottom: 16vh!important;
+}
+.part h1{
+    margin: 1.6vh;
+    font-size: 6vh;
+    font-weight: 100;
+}
+.part p, div#sel > label{
+    font-size: 3.6vh;
+    margin: 1vh 3vw;
+}
+.part strong{
+    font-family: bvn;
+    font-weight: 700;
+}
+.part .p{
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+    display: none;
+}
+div#sel{
+    text-align: left;
+}
+div#sel > label > input{
+    width: 3vh;
+    height: 3vh;
+}
+div#sel > section{
+    display: none;
+    margin-bottom: 3vh;
+}
+div#sel > section > div{
+    display: grid;
+    grid-template-columns: 4fr 5fr 2fr;
+    height: fit-content;
+    padding-bottom: 1vh;
+    box-sizing: border-box;
+}
+div#sel > section > div > *{
+    height: 7.2vh!important;
+    margin: 0;
+}
+div#sel > section > div > p{
+    display: flex;
+    align-items: center;
+}
+div#sel > section > div > button:disabled{
+    border: 1px solid rgb(43 43 43 / 50%);
+    color: rgb(43 43 43 / 50%);
+}
+div#sel > section > div > input{
+    outline: none;
+    border: 1px solid rgb(43 43 43 / 50%);
+    border-radius: 1.4vh;
+    font-family: bvn,sans-serif;
+    font-size: 3.2vh;
+    /* font-weight: 700; */
+    padding: 1vh 2vh;
+    box-sizing: border-box;
+    color: #002049;
+}
+div#sel > section > div > input:disabled{
+    color: rgb(43 43 43 / 50%);
+}
+div#sel > section .not{
+    display: none;
+    font-size: 3vh;
+}
+div#btnbar{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 14vh;
+    box-sizing: border-box;
+    padding: 3vh;
+    display: flex;
+    justify-content: right;
+}
+div#btnbar > button, .p#p2 button, div#sel > section > div > button{
+	/* width: fit-content; */
+	font-family: bvn,sans-serif;
+	/* height: auto; */
+	/* transition: all 0.4s ease-in-out; */
+	border-radius: 1.4vh;
+    cursor: pointer;
+	/* padding: 2vh 6vh; */
+	/* background-color: rgba(0, 32, 73,0); */
+	/* transition: all .2s ease-in-out; */
+    min-width: 20vh;
+    height: 8vh;
+	font-size: 2.6vh;
+    margin: 0 0 0 2.6vh;
+    color: #002049;
+	border:1px solid #002049;
+    background-color: #fff;
+}
+div#btnbar > button:last-child{
+	color: #ff7518;
+    background-color: #002049;
+}
+@font-face {
+    font-family: bvn;
+    src: url("fonts/BeVietnamPro-Regular.ttf");
+    font-weight: 400;
+}
+@font-face {
+    font-family: bvn;
+    src: url("fonts/BeVietnamPro-Bold.ttf");
+    font-weight: 700;
+}
+@font-face {
+    font-family: bvn;
+    src: url("fonts/BeVietnamPro-Light.ttf");
+    font-weight: 100;
+}
