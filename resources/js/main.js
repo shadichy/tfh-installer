@@ -24,7 +24,8 @@ let ostype = document.getElementById("os"),
     ichx = document.querySelectorAll("div#sel > label > input"),
     sel = ptag[1].querySelectorAll("div > button"),
     pathedit = false,
-    unavail = ""
+    unavail = "",
+    usecustompath=false
 
 function states(){
     (state==3&&!pathedit)?(stat?state++:state--):pathedit=false
@@ -53,6 +54,7 @@ function states(){
             document.querySelector(`.not.javaFolder`).style.display = "none"
             document.querySelector(`.not.bedrockFolder`).style.display = "none"
             stat=true
+            usecustompath=false
             break;
         case 3:
             ptag[state-2].style.display = "none"
@@ -61,6 +63,7 @@ function states(){
             sct[0].style.display = "block"
             sct[1].style.display = "block"
             // stat=false
+            usecustompath=true
             break;
         case 4:
             if (!document.getElementById("bedrockWorlds").value && !document.getElementById("javaWorlds").value) {
@@ -121,12 +124,11 @@ const checkMC = async ()=>{
         let elem = ptag[1].querySelector("p"),
             a="Thiết bị của bạn được phát hiện đã cài đặt một phiên bản <strong>Minecraft ",
             b="</strong> đã được cài đặt ",
-            c="tại <strong>",
-            d="</strong>, các thế giới được lưu ở <strong>"
+            c="tại <strong>"
         if (mcreply.java) {
-            elem.innerHTML=`${a}Java${b}bởi <strong>${checkLauncher(mcreply.JLauncher)}</strong> ${c}${mcreply.javaFolder}${d}${mcreply.javaWorlds}</strong>.`
+            elem.innerHTML=`${a}Java${b}bởi <strong>${checkLauncher(mcreply.JLauncher)}</strong> ${c}${mcreply.javaFolder}</strong>.`
         } else if (mcreply.bedrock) {
-            elem.innerHTML=`${a}Bedrock${b}${mcreply.bedrockFolder}${d}${mcreply.javaWorlds}</strong>.`
+            elem.innerHTML=`${a}Bedrock${b}${mcreply.bedrockFolder}</strong>.`
         } else {
             both=0
             inx.style.display="none"
