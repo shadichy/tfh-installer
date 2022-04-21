@@ -49,17 +49,13 @@
           </div>
           <div class="p" id="p2">
             <h1>Chọn phiên bản</h1>
-            <p>Thiết bị của bạn được phát hiện đã cài đặt cả phiên bản <strong>Minecraft Java</strong> và <strong>Minecraft Bedrock/Windows 10</strong>. Bạn có thể muốn chọn phiên bản mà <strong style="color: #ff7518;">Happy Vietnam</strong> sẽ được cài đặt:</p>
-            <div id="btn">
-              <button onclick="Neutralino.app.exit()" style="display: none;margin: 2vh;">Thoát</button>
-              <button onclick="pathedit=true;state++;states()" style="margin: 2vh;">Chỉnh sửa</button>
-            </div>
+            <p>Thiết bị của bạn được phát hiện đã cài đặt cả phiên bản <strong>Minecraft Java</strong> và <strong>Minecraft Bedrock/Windows 10</strong>. Bạn có thể muốn chọn phiên bản mà <strong class="ora">Happy Vietnam</strong> sẽ được cài đặt:</p>
           </div>
           <div class="p" id="p3">
             <h1>Chọn đường dẫn</h1>
           </div>
           <div id="sel">
-            <label for="java"><input type="checkbox" name="java" id="java" onchange="chekBoxes()">Happy Vietnam phiên bản Java</label>
+            <label for="java"><input type="checkbox" name="java" id="java" onchange="chekBoxes()"><strong class="ora">Happy Vietnam</strong> phiên bản <strong>Minecraft Java</strong></label><br/>
             <section>
               <p class="not javaFolder">notif</p>
               <div>
@@ -73,7 +69,7 @@
                 <button onclick="selFolder('javaWorlds')">Mở</button>
               </div>
             </section>
-            <label for="bedrock"><input type="checkbox" name="bedrock" id="bedrock" onchange="chekBoxes()">Happy Vietnam phiên bản Bedrock</label>
+            <label for="bedrock"><input type="checkbox" name="bedrock" id="bedrock" onchange="chekBoxes()"><strong class="ora">Happy Vietnam</strong> phiên bản <strong>Minecraft Bedrock</strong></label>
             <section>
               <p class="not bedrockFolder">notif</p>
               <div>
@@ -88,25 +84,77 @@
               </div>
             </section>
           </div>
+          <div id="btn">
+            <button onclick="Neutralino.app.exit()" style="display: none;margin: 2vh;">Thoát</button>
+            <button onclick="pathedit=true;state++;states()" style="margin: 2vh;">Chỉnh sửa</button>
+          </div>
           <div class="p" id="p4">
             <h1>Tổng quan</h1>
             <div id="cls">
-              <section style="display: grid;grid-template-columns: 1fr 7fr;">
-                <h2>Java</h2>
+              <section id="javaFinal">
+                <h3 class="ora">Minecraft Java</h3>
                 <p>Gốc: </p>
-                <strong></strong>
+                <strong class="final javaFolder"></strong>
                 <p>Lưu: </p>
+                <strong class="final javaWorlds"></strong>
               </section>
-              <section style="display: grid;grid-template-columns: 1fr 7fr;">
-                <h2>Bedrock</h2>
+              <section id="bedrockFinal">
+                <h3 class="ora">Minecraft Bedrock/Windows 10</h3>
                 <p>Gốc: </p>
-                <strong></strong>
+                <strong class="final bedrockFolder"></strong>
                 <p>Lưu: </p>
+                <strong class="final bedrockWorlds"></strong>
               </section>
             </div>
             <div id="dksd">
-              <label for="agdk"><input type="checkbox" name="agdk" id="agdk"> Tôi đã đọc và đồng ý với điều khoản sử dụng</label>
+              <div>
+                <p>
+                  <strong style="text-align: center;display: flex;">ĐIỀU KHOẢN VÀ QUY ĐỊNH SỬ DỤNG BẢN ĐỒ DỰ ÁN HAPPY VIETNAM CỦA TEAM FUHO VIỆT NAM</strong><br><br>
+<strong>1. Phạm vi áp dụng:</strong><br><br>
+1.1 Áp dụng cho bản đồ Happy Vietnam và các bản đồ khác thuộc dự án Happy Vietnam hoặc thuộc sự quản lý của Team Fuho Việt Nam.<br><br>
+1.2 Khách hàng, người chơi, người tải xuống và sử dụng bản đồ này.<br><br>
+<strong>2. Điều khoản và quy định sử dụng:</strong><br><br>
+2.1 <strong>Tôn trọng bản quyền:</strong> Team Fuho có toàn quyền sở hữu bản đồ trong chuỗi các dự án liên quan đến dự án Happy Vietnam, dưới nền tảng trò chơi Minecraft của Microsoft. Đồng thời cũng là sở hữu của các cá nhân chung dưới danh nghĩa Team Fuho.<br><br>
+Liên hệ bản quyền và thương mại: <button onclick="openLink('facebook.com/teamfuho')">Teamfuho Fanpage</button> | <button onclick="openLink('teamfuho.net')">Website Chính thức</button> | (+84) 37 8186 929 (giờ hành chính 8:00-17:00) | Email: <button onclick="Neutralino.os.open('mailto:teamfuhovietnam@gmail.com')">teamfuhovietnam@gmail.com</button><br><br>
+2.2 <strong>Không thương mại hóa:</strong> Việc thương mại hóa bản đồ Happy Vietnam cùng chuỗi bản đồ dự án liên quan đều bị cấm khi không được sự cho phép và chia sẻ lợi nhuận với Team Fuho. Bản đồ này chỉ được sử dụng vì mục đích phi thương mại (tham quan, chia sẻ, chụp hình).<br><br>
+2.3 <strong>Không sử dụng để đăng tải hình ảnh, video, nội dung nhạy cảm, mang tính chống phá và xúc phạm dự án Happy Vietnam:</strong> Việc đăng tải hình ảnh, video, nội dung nhạy cảm, mang tính chống phá nhà nước Cộng hòa xã hội chủ nghĩa Việt Nam, xúc phạm dự án, người xây dựng dự án đều bị cấm, xử lý vi phạm nếu gây ra hậu quả bằng luật pháp Việt Nam, luật áp dụng là Bộ luật Dân sự hoặc Bộ luật Hình sự.<br><br>
+2.4 <strong>Giáo dục, văn hóa, nghệ thuật:</strong> Team Fuho và dự án Happy Vietnam ưu tiên áp dụng bản đồ này cho các chương trình giáo dục, văn hóa, nghệ thuật và giáo dục nhận thức, kiến thức tại trường học và các cơ sở có nhu cầu hoặc sử dụng Minecraft để phổ biến giáo dục, văn hóa, nghệ thuật để đưa hình ảnh dự án đi vào công chúng hoặc kích thích sự sáng tạo, phát triển toàn diện của con người mà không bị cản trở dưới mọi hình thức.<br><br>
+2.5 <strong>Chơi game dưới 180 phút:</strong> Người chơi chỉ nên trải nghiệm dưới 180 phút theo các quy định và khuyến cáo về tình trạng sức khỏe.<br><br>
+2.6 <strong>Không chịu trách nhiệm cho các nội dung mà người dùng đăng tải:</strong> Team Fuho không chịu trách nhiệm cho các nội dung mà người dùng dù cho đã đăng tải hoặc chưa đăng tải công khai cho từ 01 người trở lên. Trường hợp người đó sử dụng các hình ảnh trên vi phạm khoản 2.3 mà bị xử lý theo pháp luật thì Team Fuho không chịu trách nhiệm. <br><br>
+<strong>3. Dịch vụ hỗ trợ:</strong> Team Fuho hỗ trợ khi xuất hiện lỗi trong các chuỗi dự án này thông qua các thông tin liên lạc công khai của Team Fuho.<br><br>
+<strong>4. Quyền cài đặt:</strong> Bạn có toàn quyền cài đặt và sử dụng bản đồ trong chuỗi dự án Happy Vietnam thuộc sở hữu của Team Fuho.<br><br>
+<strong>5. Từ chối hỗ trợ:</strong> Team Fuho từ chối hỗ trợ khi người dùng vi phạm các điều khoản nêu trên mà người dùng đã gây ra hoặc chưa gây ra hậu quả.<br><br>
+<strong>6. Trách nhiệm của Team Fuho:</strong><br><br>
+6.1 Team Fuho có trách nhiệm xây dựng và phát triển dự án Happy Vietnam.<br><br>
+6.2 Có trách nhiệm xử lý và khắc phục lỗi, hỗ trợ người dùng sử dụng bản đồ trên.<br><br>
+<strong>7. Cơ sở pháp lý:</strong><br><br>
+7.1 Tại Việt Nam: Sử dụng bản đồ Happy Vietnam gây ra hậu quả do vi phạm khoản 2.3 thì tùy theo trường hợp có thể bị xử lý hoặc Team Fuho có quyền kiện ra tòa, luật áp dụng là Luật pháp Việt Nam.<br><br>
+7.2 Ngoài Việt Nam: Tùy theo luật pháp sở tại.<br><br>
+<strong>8. Thay đổi nội dung:</strong> Bạn có quyền thay đổi nội dung bao gồm phá hủy, xây mới mà không vi phạm bất cứ điều khoản nào nói trên.<br><br>
+                </p>
+              </div>
+              <label for="agdk"><input type="checkbox" name="agdk" id="agdk" onchange="document.querySelector('#dksd > label').style.color=''"> Tôi đã đọc và đồng ý với điều khoản sử dụng</label>
             </div>
+          </div>
+          <div class="p" id="p5">
+            <h1>Đang cài đặt</h1>
+            <p><strong class="ora">Happy Vietnam</strong> đang được cài đặt trên thiết bị của bạn. Chờ chút, và bạn sẽ sớm được trải nghiệm <strong>các công trình kiến trúc <strong class="ora">Việt Nam</strong></strong> được tái hiện lại trong tựa game <strong>Minecraft</strong>.</p>
+            <section id="javaInstall">
+              <h3><strong class="ora">Happy Vietnam</strong> <span style="font-weight:400">cho</span> Minecraft Java</h3>
+              <div class="prog javaProg">
+                <div class="percent javaProg"></div>
+              </div>
+            </section>
+            <section id="bedrockInstall">
+              <h3><strong class="ora">Happy Vietnam</strong> <span style="font-weight:400">cho</span> Minecraft Bedrock</h3>
+              <div class="prog bedrockProg">
+                <div class="percent bedrockProg"></div>
+              </div>
+            </section>
+          </div>
+          <div class="p" id="p">
+            <h1>Đã hoàn thành!</h1>
+            <button onclick="Neutralino.app.exit()" style="margin: 2vh;">Thoát</button>
           </div>
           <div id="btnbar">
             <button onclick="state--;states()">Thoát</button>

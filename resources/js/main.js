@@ -22,10 +22,15 @@ let ostype = document.getElementById("os"),
     inx = document.querySelector("div#sel"),
     sct = document.querySelectorAll("div#sel > section"),
     ichx = document.querySelectorAll("div#sel > label > input"),
-    sel = ptag[1].querySelectorAll("div > button"),
+    opt = document.querySelector("div#btn"),
+    sel = document.querySelectorAll("div#btn > button"),
     pathedit = false,
     unavail = "",
-    usecustompath=false
+    usecustompath=false,
+    info={},
+    response={},
+    lim=0,
+    stage=0
 
 function states(){
     (state==3&&!pathedit)?(stat?state++:state--):pathedit=false
@@ -40,6 +45,7 @@ function states(){
             ptag[state].style.display = "none"
             inx.style.display = "none"
             // stat=true
+            opt.style.display = "none"
             break;
         case 2:
             btn[0].innerHTML = "Trở lại"
@@ -55,6 +61,7 @@ function states(){
             document.querySelector(`.not.bedrockFolder`).style.display = "none"
             stat=true
             usecustompath=false
+            opt.style.display = "block"
             break;
         case 3:
             ptag[state-2].style.display = "none"
@@ -63,23 +70,100 @@ function states(){
             sct[0].style.display = "block"
             sct[1].style.display = "block"
             // stat=false
+            mcrcpath=mcreply
             usecustompath=true
+            opt.style.display = "none"
             break;
         case 4:
             if (!document.getElementById("bedrockWorlds").value && !document.getElementById("javaWorlds").value) {
                 state--
                 break;
             }
+            usecustompath?info=mcrcpath:info=mcreply
+            for (const i of ["java","bedrock"]) if (info[i + "Worlds"]) document.querySelector(`#${i}Final`).style.display = "grid"                
+            for (const key of ["javaFolder","bedrockFolder","javaWorlds","bedrockWorlds"]) document.querySelector(`.final.${key}`).innerHTML = info[key]
             document.querySelector(`.not.javaFolder`).style.display = "none"
             document.querySelector(`.not.bedrockFolder`).style.display = "none"
             ptag[state-3].style.display = "none"
             ptag[state-2].style.display = "none"
             ptag[state-1].style.display = "block"
+            ptag[state].style.display = "none"
             inx.style.display = "none"
             sct[0].style.display = "none"
             sct[1].style.display = "none"
+            opt.style.display = "none"
             stat=false
             break;
+        case 5:
+            if (!document.getElementById("agdk").checked) {
+                document.querySelector("#dksd > label").style.color="red"
+                state--
+                break;
+            }
+            startInstall(info)
+            for (const i of ["java","bedrock"]) {
+                if (info[i + "Worlds"]) {
+                    document.querySelector(`#${i}Install`).style.display = "block"
+                    lim++
+                    loadInstall(i)
+                }
+            }
+            ptag[state-2].style.display = "none"
+            ptag[state-1].style.display = "block"
+            btnbar.style.display = "none"
+            break;
+        case 6:
+            ptag[state-2].style.display = "none"
+            ptag[state-1].style.display = "block"
+            break;
+    }
+}
+
+const loadInstall = async (w)=>{
+    let ps = document.getElementsByClassName("percent"),
+        vers = ["java","bedrock"],
+        defc = [20,20],
+        d = [20,42,56,84,96],
+        t = [20,10,15,10],
+        prog = (i)=>{
+            let g = 0,
+                e = d[g],
+                p = d[g+1],
+                m=()=>{
+                    // console.log("running")
+                    if (response[vers[i]]) {
+                        p=100
+                        f()
+                        stage++
+                        if (stage == lim) {
+                            state++
+                            states()
+                        }
+                    } else setTimeout(m,1000)
+                },
+                f=()=>{
+                    e++
+                    ps[i].style.width = e + "%"
+                    if (e<p) {
+                        setTimeout(f,1)
+                        // console.log("updating")
+                    } else if (e==p) {
+                        if (g+1!=d.length){
+                            g++
+                            p = d[g+1]
+                            setTimeout(f,t[g]*100)
+                        }
+                        if (g+1==d.length) {
+                            m()
+                        }
+                    }
+                }
+            f()
+        }
+    for (const i of [0,1]) {
+        let t
+        i==0?t=2000:t=3000
+        if (w == vers[i]) setTimeout(()=>{prog(i)},t)
     }
 }
 
@@ -90,6 +174,19 @@ function openLink(link) {
 const checkOS = async (cmd)=>{
     let asd = await Neutralino.os.execCommand(cmd);
     ostype.innerHTML = asd.stdOut
+}
+
+const startInstall = async (src)=>{
+    let asd = await Neutralino.os.execCommand(`sh -c '\\
+        isjava=${src.java} \\
+        isbedrock=${src.bedrock} \\
+        javaFolder=${src.javaFolder} \\
+        bedrockFolder=${src.bedrockFolder} \\
+        javaWorlds=${src.javaWorlds} \\
+        bedrockWorlds=${src.bedrockWorlds} \\
+        JLauncher=${src.JLauncher} \\
+        resources/scripts/install'`);
+    response = JSON.parse(asd.stdOut)
 }
 
 // const exec = (cmd) => new Promise((resolve,reject)=>{
@@ -108,7 +205,7 @@ const checkFolder = async (dir)=>{
 
 }
 const checkMC = async ()=>{
-    let asd = await Neutralino.os.execCommand(`sh -c './resources/scripts/checkmc ${NL_OS}'`);
+    let asd = await Neutralino.os.execCommand(`sh -c 'resources/scripts/checkmc ${NL_OS}'`);
     mcreply = JSON.parse(asd.stdOut)
     if (mcreply.java) {
         ichx[0].checked = true
@@ -122,7 +219,7 @@ const checkMC = async ()=>{
         both=1
         inx.style.display="none"
         let elem = ptag[1].querySelector("p"),
-            a="Thiết bị của bạn được phát hiện đã cài đặt một phiên bản <strong>Minecraft ",
+            a="Thiết bị của bạn được phát hiện đã cài đặt một phiên bản <strong class='ora'>Minecraft ",
             b="</strong> đã được cài đặt ",
             c="tại <strong>"
         if (mcreply.java) {
@@ -134,7 +231,7 @@ const checkMC = async ()=>{
             inx.style.display="none"
             elem.innerHTML = `Thiết bị của bạn dường như không có phiên bản <strong>Minecraft</strong> nào đã được cài đặt. Vui lòng cài đặt <strong>Minecraft</strong> và thử lại!`
             sel[0].style.display = "block"
-            btnbar.sttyle.display = "none"
+            btnbar.style.display = "none"
         }
     }
     inpRenew(mcreply)
@@ -142,7 +239,7 @@ const checkMC = async ()=>{
 }
 
 function inpRenew(data) {
-    for (const key in {"javaFolder":"","bedrockFolder":"","javaWorlds":"","bedrockWorlds":""}) {
+    for (const key of ["javaFolder","bedrockFolder","javaWorlds","bedrockWorlds"]) {
         document.querySelector(`input#${key}`).value = data[key]
     }
 }
@@ -164,40 +261,40 @@ const checkPath = async (id)=>{
     let iw = id.split("Folder")[0]+"Worlds",
         pel = document.querySelector(`.not.${id}`),
         pal = document.getElementById(iw),
-        asd = await Neutralino.os.execCommand(`sh -c './resources/scripts/checkmc ${NL_OS} ${document.getElementById(id).value}'`);
+        asd = await Neutralino.os.execCommand(`sh -c 'resources/scripts/checkmc ${NL_OS} ${document.getElementById(id).value}'`);
     mcrcpath = JSON.parse(asd.stdOut)
     pal.value = mcrcpath[iw]
     pel.style.display = "block"
-    let a="Tìm thấy phiên bản <strong>Minecraft ",
+    let a="ìm thấy phiên bản <strong style='color:inherit'>Minecraft ",
         b="</strong> hợp lệ"
     pel.style.color = "#32cd32"
     if (mcrcpath.java && id.includes("java")) {
-        pel.innerHTML = `${a}Java</strong> bởi <strong>${checkLauncher(mcrcpath.JLauncher)}${b}`
+        pel.innerHTML = `T${a}Java</strong> bởi <strong>${checkLauncher(mcrcpath.JLauncher)}${b}`
     } else if (mcreply.bedrock && id.includes("bedrock")) {
-        pel.innerHTML = `${a}Bedrock${mcrcpath.JLauncher}${b}`
+        pel.innerHTML = `T${a}Bedrock${b}`
     } else {
-        pel.innerHTML = "Không tìm thấy phiên bản <strong>Minecraft</strong> hợp lệ"
+        pel.innerHTML = `Không t${a}${b}`
         pel.style.color = "red"
         unavail = iw
     }
 }
 
 function chekBoxes(){
+    let ch = (a,b)=>{for (const x of ["input","button"]) for (let i = 0; i < 2; i++) sct[a].querySelectorAll(x)[i].disabled = b}
     if (ichx[0].checked && ichx[1].checked) {
         ichx[0].disabled = false
         ichx[1].disabled = false
-        for (let z = 0; z < 2; z++) for (const x in {"input":"","button":""}) for (let i = 0; i < 2; i++) sct[z].querySelectorAll(x)[i].disabled = false
+        for (let z = 0; z < 2; z++) ch(z,false)
 
     } else if (ichx[0].checked && !ichx[1].checked){
         ichx[0].disabled = true
-        for (const x in {"input":"","button":""}) for (let i = 0; i < 2; i++) sct[1].querySelectorAll(x)[i].disabled = true
+        ch(1,true)
         document.querySelector(`.not.javaFolder`).style.display = "none"
         
     } else if (!ichx[0].checked && ichx[1].checked){
         ichx[1].disabled = true
-        for (const x in {"input":"","button":""}) for (let i = 0; i < 2; i++) sct[0].querySelectorAll(x)[i].disabled = true
+        ch(0,true)
         document.querySelector(`.not.bedrockFolder`).style.display = "none"
-        
     }
 }
 
@@ -206,6 +303,7 @@ const selFolder = async (dir)=>{
     document.getElementById(dir).value = tar
     if (dir.includes("Folder")) checkPath(dir)
     else document.querySelector(`.not.${dir.split("Worlds")[0]+"Folder"}`).style.display = "none"
+    if (dir.includes("Worlds")) mcrcpath[dir] = tar
 }
 
 // function setTray() {
@@ -251,7 +349,7 @@ Neutralino.events.on("windowClose", onWindowClose);
 
 // showInfo();
 // ostype.innerHTML = (NL_OS=="Darwin"?"Mac OS":NL_OS=="Windows"?:"");
-checkOS("sh -c './resources/scripts/neofetch'")
+checkOS("sh -c 'resources/scripts/neofetch'")
 checkMC()
 states()
 // let pyver = await Neutralino.os.execCommand('python --version');

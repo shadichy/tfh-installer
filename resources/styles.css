@@ -14,7 +14,7 @@
     font-size: 16px;
     font-weight: normal;
 }
-p,h1,label{
+p,h1,label,h3,strong{
     color: #002049;
     font-family: bvn,sans-serif;
 }
@@ -119,10 +119,11 @@ div#sel > section{
 }
 div#sel > section > div{
     display: grid;
-    grid-template-columns: 4fr 5fr 2fr;
+    grid-template-columns: 2fr 4fr 1fr;
     height: fit-content;
     padding-bottom: 1vh;
     box-sizing: border-box;
+    margin: 0 3vh;
 }
 div#sel > section > div > *{
     height: 7.2vh!important;
@@ -164,7 +165,7 @@ div#btnbar{
     display: flex;
     justify-content: right;
 }
-div#btnbar > button, .p#p2 button, div#sel > section > div > button{
+div#btnbar > button, div#btn button, div#sel > section > div > button{
 	/* width: fit-content; */
 	font-family: bvn,sans-serif;
 	/* height: auto; */
@@ -185,6 +186,73 @@ div#btnbar > button, .p#p2 button, div#sel > section > div > button{
 div#btnbar > button:last-child{
 	color: #ff7518;
     background-color: #002049;
+}
+div#cls > section{
+    display: none; /* grid */
+    grid-template-columns: 1fr 4fr;
+    margin: 0 3vh;
+}
+div#cls > section > h3, .p#p5 > section > h3{
+    font-size: 3.6vh;
+    margin-bottom: 0;
+    text-align: left;
+    margin-left: 3.4vw;
+    grid-column: 1/3;
+}
+div#cls > section > h3{
+    margin-top: 1.5vh;
+}
+.p#p5 > section > h3{
+    margin-top: 2.2vh;
+}
+.p#p5 > section{display: none;}
+div#cls > section > strong{
+    text-align: left;
+    font-size: 3.2vh;
+    overflow: auto;
+}
+div#cls > section > p{
+    margin: 0;
+}
+.ora{
+    color: #ff7518;
+}
+#dksd > div{
+    margin: 2vh 3.4vw 0;
+    overflow: auto;
+    height: 20vh;
+    padding: 1vh;
+    border-radius: 2vh;
+    border: 1px solid rgba(43, 43, 43, .25);
+    box-sizing: border-box;
+}
+#dksd > div > p{
+    text-align: left;
+    font-size: 2.6vh;
+}
+#dksd > div button{
+    border: none;
+    background: none;
+    font: inherit;
+    color: #3366bb;
+    margin: 0;
+    padding: 0;
+    font-style: underline;
+    cursor: pointer;
+}
+.prog{
+    margin: 0 3.4vw;
+    height: 2vh;
+    border-radius: 2vh;
+    overflow: hidden;
+    border: 1px solid rgba(43,43,43,.25);
+}
+.percent{
+    height: 100%;
+    background: #ff7518;
+    border-radius: 2vh;
+    width: 20%;
+    /* transition: all .3s ease-in-out; */
 }
 @font-face {
     font-family: bvn;
