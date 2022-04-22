@@ -18,6 +18,9 @@ p,h1,label,h3,strong{
     color: #002049;
     font-family: bvn,sans-serif;
 }
+strong.ora{
+    white-space: nowrap;
+}
 body{
     margin: 0;
     overflow: hidden;
@@ -132,6 +135,7 @@ div#sel > section > div > *{
 div#sel > section > div > p{
     display: flex;
     align-items: center;
+    width: 100%;
 }
 div#sel > section > div > button:disabled{
     border: 1px solid rgb(43 43 43 / 50%);
@@ -153,7 +157,7 @@ div#sel > section > div > input:disabled{
 }
 div#sel > section .not{
     display: none;
-    font-size: 3    vh;
+    font-size: 3vh;
 }
 div#btnbar{
     position: absolute;
@@ -165,7 +169,7 @@ div#btnbar{
     display: flex;
     justify-content: right;
 }
-div#btnbar > button, div#btn button, div#sel > section > div > button{
+div#btnbar > button, div#btn button, div#sel > section > div > button, .p#p6 > div > button{
 	/* width: fit-content; */
 	font-family: bvn,sans-serif;
 	/* height: auto; */
@@ -183,7 +187,7 @@ div#btnbar > button, div#btn button, div#sel > section > div > button{
 	border:1px solid #002049;
     background-color: #fff;
 }
-div#btnbar > button:last-child{
+div#btnbar > button:last-child, .p#p6 > div > button{
 	color: #ff7518;
     background-color: #002049;
 }
@@ -217,7 +221,7 @@ div#cls > section > p{
 .ora{
     color: #ff7518;
 }
-#dksd > div{
+#dksd > div, #err > div{
     margin: 2vh 3.4vw 0;
     overflow: auto;
     height: 20vh;
@@ -226,11 +230,14 @@ div#cls > section > p{
     border: 1px solid rgba(43, 43, 43, .25);
     box-sizing: border-box;
 }
-#dksd > div > p{
+#dksd > div > p, #err > div > p{
     text-align: left;
     font-size: 2.6vh;
 }
-#dksd > div button{
+#err > div > p{
+    color: red;
+}
+#dksd > div button, .p#p6 > p button{
     border: none;
     background: none;
     font: inherit;

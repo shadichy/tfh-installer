@@ -137,7 +137,7 @@ const loadInstall = async (w)=>{
                         stage++
                         if (stage == lim) {
                             state++
-                            states()
+                            setTimeout(states,2000)
                         }
                     } else setTimeout(m,1000)
                 },
@@ -178,14 +178,24 @@ const checkOS = async (cmd)=>{
 
 const startInstall = async (src)=>{
     let asd = await Neutralino.os.execCommand(`sh -c '\\
-        isjava=${src.java} \\
-        isbedrock=${src.bedrock} \\
-        javaFolder=${src.javaFolder} \\
-        bedrockFolder=${src.bedrockFolder} \\
-        javaWorlds=${src.javaWorlds} \\
-        bedrockWorlds=${src.bedrockWorlds} \\
-        JLauncher=${src.JLauncher} \\
-        resources/scripts/install'`);
+isjava=${src.java} \\
+isbedrock=${src.bedrock} \\
+javaFolder=${src.javaFolder} \\
+bedrockFolder=${src.bedrockFolder} \\
+javaWorlds=${src.javaWorlds} \\
+bedrockWorlds=${src.bedrockWorlds} \\
+JLauncher=${src.JLauncher} \\
+resources/scripts/install'`);
+    if (asd.stdErr) {
+        document.querySelector("#p6>h1").innerHTML = "Đã xảy ra lỗi"
+        document.querySelector("#p6>p").innerHTML = `Cài đặt thất bại! Vui lòng liên hệ với Team Fuho qua <button onclick="openLink('facebook.com/teamfuho')">Fanpage</button>, <button onclick="openLink('teamfuho.net/vi/comm#feedback')">Website</button> hoặc <button onclick="Neutralino.os.open('mailto:teamfuhovietnam@gmail.com')">Email</button> để được hỗ trợ.`
+        document.getElementById("err").style.display = "block"
+        document.querySelector("#err > div > p").innerHTML = asd.stdErr.replace(/\n/g,"<br/>")
+        response = asd.stdErr.replace(/\n/g,"<br/>")
+        state++
+        states()
+        return
+    }
     response = JSON.parse(asd.stdOut)
 }
 
@@ -303,7 +313,10 @@ const selFolder = async (dir)=>{
     document.getElementById(dir).value = tar
     if (dir.includes("Folder")) checkPath(dir)
     else document.querySelector(`.not.${dir.split("Worlds")[0]+"Folder"}`).style.display = "none"
-    if (dir.includes("Worlds")) mcrcpath[dir] = tar
+    if (dir.includes("Worlds")) {
+        mcrcpath[dir.split("Worlds")[0]] = true
+        mcrcpath[dir] = tar
+    }
 }
 
 // function setTray() {

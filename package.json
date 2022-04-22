@@ -1,0 +1,27 @@
+{
+  "name": "hpvninstaller",
+  "version": "0.1.0",
+  "description": "Happy Vietnam Installer",
+  "main": "index.js",
+  "scripts": {
+    "build": "./build.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shadichy/tfh-installer.git"
+  },
+  "author": "Shadichy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shadichy/tfh-installer/issues"
+  },
+  "homepage": "https://github.com/shadichy/tfh-installer#readme",
+  "dependencies": {
+    "csso": "^5.0.3",
+    "fs": "^0.0.1-security",
+    "html-minifier": "^4.0.0",
+    "node-json-minify": "^3.0.0",
+    "path": "^0.12.7",
+    "terser": "^5.12.1"
+  }
+}

@@ -4,11 +4,29 @@
 # Neutralinojs binaries and builds
 /dist
 /bin
-/.tmp
 
+/.tmp
+/node_modules
+
+/out/bin
+/out/dist/build/*
+!/out/dist/build/.empty
+
+/out/dist/hpvn/
+
+/out/resources/fonts
+/out/resources/icons
+/out/resources/res
+
+/out/resources/js/*
+!/out/resources/js/.empty
+
+/out/resources/*.html
+/out/resources/*.css
+/out/*.json
 # Neutralinojs client (minified)
 neutralino.js
-
+*.AppImage
 # Neutralinojs related files
 .storage
 *.log

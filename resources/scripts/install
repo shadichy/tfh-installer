@@ -84,7 +84,7 @@ notes=
 totalTimePlayed=
 
 EOF
-    			    		cp ../res/pack.png $javaFolder/instances/1.14.4/
+    			    		cp pack.png $javaFolder/instances/1.14.4/
     			    	fi
     			    	;;
     			    "tl" )
