@@ -3,8 +3,8 @@
 # define the tasks that need to be done with the extracted content
 process_tar() {
     cd $WORK_DIR
-    chmod +x ./hpvn-$os_$arch
-    ./hpvn-$os_$arch
+    chmod +x ./hpvn-${os}_${arch}
+    ./hpvn-${os}_${arch}
 }
 
 # line number where payload starts

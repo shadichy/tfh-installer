@@ -31,7 +31,7 @@ trim_quotes() {
 get_os() {
     case $kernel_name in
         Darwin)   os=$darwin_name ;;
-        SunOS)    os=Solaris ;;
+        SuS)    os=Solaris ;;
         Haiku)    os=Haiku ;;
         MINIX)    os=MINIX ;;
         AIX)      os=AIX ;;

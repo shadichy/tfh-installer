@@ -41,7 +41,7 @@ fs.writeFileSync(path.join(__dirname, "out/resources", "styles.css"), csso.minif
 fs.readFile(path.join(__dirname, "resources/js", "main.js"), "utf8",(e,r)=>js(r.replace(/resources\/scripts/g,".")))
 fs.readFile(path.join(__dirname, "neutralino.config.json"), "utf8",(e,r)=>{
     let data = JSON.parse(r)
-    data.modes.window.enableInspector = false
+    if (!process.argv.includes("debug") && !process.argv.includes("\"debug\"")) data.modes.window.enableInspector = false
     fs.writeFileSync(path.join(__dirname, "out", "neutralino.config.json"),JSON.minify(JSON.stringify(data)))
 })
 // fs.writeFileSync(path.join(__dirname, "out", "neutralino.config.json"), )
