@@ -1448,7 +1448,7 @@ EOF
     	    	esac
     	    fi
             # echo $(wr "${i}")
-    	    tar -xzvf "${filename}" -C $(wr "${i}")
+    	    tar -xzf "${filename}" -C $(wr "${i}")
 
             if [ $? -eq 0 ]; then
                 rm -f "${filename}"
