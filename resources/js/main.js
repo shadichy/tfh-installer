@@ -79,7 +79,7 @@ function states(){
             btnbar.style.display = "flex"
             break;
         case 4:
-            if (stat) for (const i of ["java","bedrock"]) if (document.getElementById(i).checked && !document.getElementById(i + "Worlds").value) {
+            if (!stat) for (const i of ["java","bedrock"]) if (document.getElementById(i).checked && !document.getElementById(i + "Worlds").value) {
                 document.getElementById(i + "Worlds").style.borderColor = "red"
                 state=3
                 return;
