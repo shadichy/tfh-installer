@@ -82,7 +82,7 @@ function states(){
             for (const i of ["java","bedrock"]) if (document.getElementById(i).checked && !document.getElementById(i + "Worlds").value) {
                 document.getElementById(i + "Worlds").style.borderColor = "red"
                 state=3
-                break
+                break;
             }
             usecustompath?info=mcrcpath:info=mcreply
             for (const i of ["java","bedrock"]) if (info[i + "Worlds"]) document.querySelector(`#${i}Final`).style.display = "grid"                
