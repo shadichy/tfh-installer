@@ -85,7 +85,7 @@ function states(){
                 return;
             }
             usecustompath?info=mcrcpath:info=mcreply
-            for (const i of ["java","bedrock"]) if (info[i + "Worlds"]) document.querySelector(`#${i}Final`).style.display = "grid"                
+            for (const i of ["java","bedrock"]) if (info[i + "Worlds"]) document.getElementById(i + "Final").style.visibility = "visible"
             for (const key of ["javaFolder","bedrockFolder","javaWorlds","bedrockWorlds"]) document.querySelector(`.final.${key}`).innerHTML = info[key]
             document.querySelector(`.not.javaFolder`).style.display = "none"
             document.querySelector(`.not.bedrockFolder`).style.display = "none"

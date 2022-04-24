@@ -195,9 +195,10 @@ div#btnbar > button:disabled{
     opacity: .6;
 }
 div#cls > section{
-    display: none; /* grid */
+    display: grid; /* grid */
     grid-template-columns: 1fr 4fr;
     margin: 0 3vh;
+    visibility: hidden;
 }
 div#cls > section > h3, .p#p5 > section > h3{
     font-size: 3.6vh;
