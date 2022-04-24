@@ -7,9 +7,9 @@ bedrock=false
 osdir(){
 	if [[ ! -z "$2" ]]; then
 		javaFolder="$2"
-        bedrockFolder="$2"
+		bedrockFolder="$2"
 		return
-    fi
+	fi
 
 	case "$1" in
 		"Darwin")
@@ -24,47 +24,72 @@ osdir(){
 	esac
 }
 
+mmcFind(){
+	echo "$(find "$1" \( -iname "multimc.cfg" -o -iname "ultimmc.cfg" -o -iname "polymc.cfg" \) -printf '%h\n' 2>/dev/null | sort -u | head -1)"
+}
+
 mmc(){
-	multimc=$(find ~ -iname '*lti*mc.cfg' -printf '%h\n' 2>/dev/null | sort -u | head -1)
+	multimc=$(mmcFind ~)
+	[[ -z "${multimc}" && "$1" == "Darwin" ]] && mmcFind() "/Applications"
 	if [[ ! -z "${multimc}" ]]; then
 		java=true
 		javaFolder="${multimc}"
 		JLauncher="multimc"
 		javaWorlds="$(ls -d ${multimc}/instances/*1.14.4* | head -1)/saves"
 		[[ "${javaWorlds}" == "/saves" ]] && javaWorlds="${multimc}/instances/1.14.4/saves"
-    else
-        javaFolder=""
+	else
+		javaFolder=""
+	fi
+}
+
+bedfind(){
+	beddir="$(find ~ -type d -iname "com.mojang" 2>/dev/null | sort -u | head -1)"
+	if [[ ! -z "${beddir}" ]]; then
+		bedrock=true
+		bedrockFolder="${beddir}"
+		bedrockWorlds="${bedrockFolder}/minecraftWorlds"
+	else
+		bedrockFolder=""
 	fi
 }
 
 dircheck(){
-    if [[ -d "${javaFolder}" ]]; then
-    	if [[ -d "${javaFolder}/home" ]]; then
-    		JLauncher="tl"
-    		javaWorlds="$(ls -d ${javaFolder}/home/*1.14* | head -1)/saves"
-    		[[ "${javaWorlds}" == "/saves" ]] && javaWorlds="${javaFolder}/home/1.14/saves"
-    	else
-    		JLauncher="default"
-    		javaWorlds="${javaFolder}/saves"
-    	fi
+	if [[ -d "${javaFolder}" ]]; then
+		if [[ -d "${javaFolder}/home" ]]; then
+			JLauncher="tl"
+			javaWorlds="$(ls -d ${javaFolder}/home/*1.14* | head -1)/saves"
+			[[ "${javaWorlds}" == "/saves" ]] && javaWorlds="${javaFolder}/home/1.14/saves"
+		elif [[ -d "${javaFolder}/instances" ]];then
+			JLauncher="multimc"
+			javaWorlds="$(ls -d ${javaFolder}/instances/*1.14.4* | head -1)/saves"
+			[[ "${javaWorlds}" == "/saves" ]] && javaWorlds="${javaFolder}/instances/1.14.4/saves"
+		else
+			JLauncher="default"
+			javaWorlds="${javaFolder}/saves"
+		fi
 
-    	if [[ -d "${javaWorlds}" ]];then
-            java=true 
-        else
-            javaWorlds=""
-            [[ -z "$2" ]] && mmc
-        fi
-        
-    elif [[ -z "$2" ]]; then
-        mmc
-    fi
+		if [[ -d "${javaWorlds}" ]];then
+			java=true 
+		else
+			javaWorlds=""
+			[[ -z "$2" ]] && mmc
+		fi
+		
+	elif [[ -z "$2" ]]; then
+		mmc
+	fi
 
-    if [[ -d "${bedrockFolder}" ]]; then
-    	bedrockWorlds="${bedrockFolder}/minecraftWorlds"
-    	[[ -d "${bedrockWorlds}" ]] && bedrock=true || bedrockWorlds=""
-    else
-        bedrockFolder=""
-    fi
+	if [[ -d "${bedrockFolder}" ]]; then
+		bedrockWorlds="${bedrockFolder}/minecraftWorlds"
+		if [[ -d "${bedrockWorlds}" ]]; then
+			bedrock=true
+		else
+			bedrockWorlds=""
+			[[ -z "$2" ]] && bedfind
+		fi
+	elif [[ -z "$2" ]]; then
+		bedfind
+	fi
 }
 
 osdir "$@"

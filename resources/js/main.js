@@ -276,7 +276,7 @@ const checkPath = async (id)=>{
     let iw = id.split("Folder")[0]+"Worlds",
         pel = document.querySelector(`.not.${id}`),
         pal = document.getElementById(iw),
-        asd = await Neutralino.os.execCommand(`sh -c 'resources/scripts/checkmc ${NL_OS} ${document.getElementById(id).value}'`);
+        asd = await Neutralino.os.execCommand(NL_OS=="Windows"?`resources/scripts/checkmc.bat ${document.getElementById(id).value}`:`sh -c 'resources/scripts/checkmc ${NL_OS} ${document.getElementById(id).value}'`);
     mcrcpath = JSON.parse(asd.stdOut)
     pal.value = mcrcpath[iw]
     pel.style.display = "block"
@@ -322,6 +322,7 @@ function chekBoxes(){
 const selFolder = async (dir)=>{
     let tar = await Neutralino.os.showFolderDialog("Chọn thư mục")
     document.getElementById(dir).value = tar
+    document.getElementById(dir.split("Worlds")[0]).checked=true
     if (dir.includes("Folder")) checkPath(dir)
     else document.querySelector(`.not.${dir.split("Worlds")[0]+"Folder"}`).style.display = "none"
     if (dir.includes("Worlds")) {
@@ -373,7 +374,7 @@ Neutralino.events.on("windowClose", onWindowClose);
 
 // showInfo();
 // ostype.innerHTML = (NL_OS=="Darwin"?"Mac OS":NL_OS=="Windows"?:"");
-checkOS("sh -c 'resources/scripts/neofetch'")
+checkOS(NL_OS=="Windows"?"ver":"sh -c 'resources/scripts/neofetch'")
 checkMC()
 states()
 // let pyver = await Neutralino.os.execCommand('python --version');

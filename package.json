@@ -18,6 +18,7 @@
   "homepage": "https://github.com/shadichy/tfh-installer#readme",
   "dependencies": {
     "@neutralinojs/neu": "^9.3.0",
+    "bash-converter": "^2.3.0",
     "csso": "^5.0.3",
     "fs": "^0.0.1-security",
     "html-minifier": "^4.0.0",
