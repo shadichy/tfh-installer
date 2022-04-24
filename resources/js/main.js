@@ -295,20 +295,26 @@ const checkPath = async (id)=>{
 
 function chekBoxes(){
     let ch = (a,b)=>{for (const x of ["input","button"]) for (let i = 0; i < 2; i++) sct[a].querySelectorAll(x)[i].disabled = b}
+    btn[1].disabled = false
     if (ichx[0].checked && ichx[1].checked) {
         ichx[0].disabled = false
         ichx[1].disabled = false
         for (let z = 0; z < 2; z++) ch(z,false)
 
-    } else if (ichx[0].checked && !ichx[1].checked){
+    }
+    if (ichx[0].checked && !ichx[1].checked){
         ichx[0].disabled = true
         ch(1,true)
         document.querySelector(`.not.javaFolder`).style.display = "none"
         
-    } else if (!ichx[0].checked && ichx[1].checked){
+    }
+    if (!ichx[0].checked && ichx[1].checked){
         ichx[1].disabled = true
         ch(0,true)
         document.querySelector(`.not.bedrockFolder`).style.display = "none"
+    }
+    if (!ichx[0].checked && !ichx[1].checked) {
+        btn[1].disabled = true
     }
 }
 

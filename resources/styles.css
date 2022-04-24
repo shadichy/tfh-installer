@@ -191,6 +191,9 @@ div#btnbar > button:last-child, .p#p6 > div > button{
 	color: #ff7518;
     background-color: #002049;
 }
+div#btnbar > button:disabled{
+    opacity: .6;
+}
 div#cls > section{
     display: none; /* grid */
     grid-template-columns: 1fr 4fr;
