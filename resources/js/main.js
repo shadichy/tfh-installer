@@ -79,7 +79,7 @@ function states(){
             btnbar.style.display = "flex"
             break;
         case 4:
-            for (const i of ["java","bedrock"]) if (document.getElementById(i).checked && !document.getElementById(i + "Worlds").value) {
+            if (stat) for (const i of ["java","bedrock"]) if (document.getElementById(i).checked && !document.getElementById(i + "Worlds").value) {
                 document.getElementById(i + "Worlds").style.borderColor = "red"
                 state=3
                 return;
@@ -235,12 +235,12 @@ const checkMC = async ()=>{
         inx.style.display="none"
         let elem = ptag[1].querySelector("p"),
             a="Thiết bị của bạn được phát hiện đã cài đặt một phiên bản <strong class='ora'>Minecraft ",
-            b="</strong> đã được cài đặt ",
+            b="</strong> ",
             c="tại <strong>"
         if (mcreply.java) {
             elem.innerHTML=`${a}Java${b}bởi <strong>${checkLauncher(mcreply.JLauncher)}</strong> ${c}${mcreply.javaFolder}</strong>.`
         } else if (mcreply.bedrock) {
-            elem.innerHTML=`${a}Bedrock${b}${mcreply.bedrockFolder}</strong>.`
+            elem.innerHTML=`${a}Bedrock${b}${c}${mcreply.bedrockFolder}</strong>.`
         } else {
             both=0
             inx.style.display="none"
