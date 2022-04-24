@@ -29,8 +29,8 @@ mmcFind(){
 }
 
 mmc(){
-	multimc=$(mmcFind ~)
-	[[ -z "${multimc}" && "$1" == "Darwin" ]] && mmcFind() "/Applications"
+	multimc="$(mmcFind ~)"
+	[[ -z "${multimc}" && "$1" == "Darwin" ]] && multimc="4(mmcFind() /Applications)"
 	if [[ ! -z "${multimc}" ]]; then
 		java=true
 		javaFolder="${multimc}"
