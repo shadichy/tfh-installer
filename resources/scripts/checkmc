@@ -35,7 +35,7 @@ mmc(){
 		java=true
 		javaFolder="${multimc}"
 		JLauncher="multimc"
-		javaWorlds="$(ls -d ${multimc}/instances/*1.14.4* | head -1)/saves"
+		javaWorlds="$(ls -d "${multimc}"/instances/*1.14.4* 2>/dev/null | head -1)/saves"
 		[[ "${javaWorlds}" == "/saves" ]] && javaWorlds="${multimc}/instances/1.14.4/saves"
 	else
 		javaFolder=""
@@ -57,11 +57,11 @@ dircheck(){
 	if [[ -d "${javaFolder}" ]]; then
 		if [[ -d "${javaFolder}/home" ]]; then
 			JLauncher="tl"
-			javaWorlds="$(ls -d ${javaFolder}/home/*1.14* | head -1)/saves"
+			javaWorlds="$(ls -d "${javaFolder}"/home/*1.14* 2>/dev/null | head -1)/saves"
 			[[ "${javaWorlds}" == "/saves" ]] && javaWorlds="${javaFolder}/home/1.14/saves"
 		elif [[ -d "${javaFolder}/instances" ]];then
 			JLauncher="multimc"
-			javaWorlds="$(ls -d ${javaFolder}/instances/*1.14.4* | head -1)/saves"
+			javaWorlds="$(ls -d "${javaFolder}"/instances/*1.14.4* 2>/dev/null | head -1)/saves"
 			[[ "${javaWorlds}" == "/saves" ]] && javaWorlds="${javaFolder}/instances/1.14.4/saves"
 		else
 			JLauncher="default"
@@ -72,11 +72,11 @@ dircheck(){
 			java=true 
 		else
 			javaWorlds=""
-			[[ -z "$2" ]] && mmc
+			[[ -z "$2" ]] && mmc "$1"
 		fi
 		
 	elif [[ -z "$2" ]]; then
-		mmc
+		mmc "$1"
 	fi
 
 	if [[ -d "${bedrockFolder}" ]]; then
