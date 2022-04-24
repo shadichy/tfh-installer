@@ -42,7 +42,7 @@ dircheck(){
     	if [[ -d "$javaFolder/home" ]]; then
     		JLauncher="tl"
     		javaWorlds="$(ls -d $javaFolder/home/*1.14* | head -1)/saves"
-    		[[ $javaWorlds == "/saves" ]] && javaWorlds="$$javaFolder/home/1.14/saves"
+    		[[ $javaWorlds == "/saves" ]] && javaWorlds="$javaFolder/home/1.14/saves"
     	else
     		JLauncher="default"
     		javaWorlds="$javaFolder/saves"
@@ -57,6 +57,8 @@ dircheck(){
         
     elif [[ -z $2 ]]; then
         mmc
+	else
+		javaFolder=""
     fi
 
     if [[ -d $bedrockFolder ]]; then
