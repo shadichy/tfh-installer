@@ -66,6 +66,7 @@ function states(){
             btnbar.style.display = nomc?"none":"flex"
             break;
         case 3:
+            chekBoxes()
             ptag[state-2].style.display = "none"
             ptag[state-1].style.display = "block"
             inx.style.display = "block"
