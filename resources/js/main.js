@@ -77,6 +77,7 @@ function states(){
             usecustompath=true
             opt.style.display = "none"
             btnbar.style.display = "flex"
+            stat=false
             break;
         case 4:
             if (!stat) for (const i of ["java","bedrock"]) if (document.getElementById(i).checked && !document.getElementById(i + "Worlds").value) {
