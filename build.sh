@@ -30,11 +30,12 @@ get_args(){
 				echo -e "\e[1;44m  -m,--arch=<arch>\e[1;m\t\t\tBuild the specified architecture (default: ${machine})"
 				echo -e "\t\t\t\tSupported architecture: x86_64, i686"
 				echo -e "\e[1;44m  -d,--debug\e[1;m\t\t\tBuild the debug version"
-				echo -e "\e[1;44m  -u,--update\e[1;m\t\t\tUpdate the binaries"declare -pdeclare -p
+				echo -e "\e[1;44m  -u,--update\e[1;m\t\t\tUpdate the binaries"
 				echo -e ""
 				exit 0
 				;;
 			"--clean" | "-c")
+				update=true
 				clean=true
 				;;
 			"--target="*)
@@ -109,6 +110,9 @@ if [[ "${update}" == true ]];then
 	echo -e "\e[1;44mUpdating the binaries...\e[1;m"
 	neu update
 	pnpm update
+else
+	cp -r ../bin .
+	cp -r ../resources/js/neutralino.js ./resources/js/
 fi
 
 neu build
@@ -174,6 +178,10 @@ EOF
 			
 		fi
 		if [ "${x}" = "script" ]; then
+			# if os is mac and arch is ia32 then skip
+			if [ "${i}" = "mac" ] && [ "${arch}" = "ia32" ]; then
+				continue
+			fi
 			echo -e "\e[1;44mCreate script for ${i} ${arch}\e[1;m"
 			tar -zcvf hpvn-${i}_${arch}.tar.gz install neofetch checkmc resources.neu hpvn-${i}_${arch} pack.png
 			rm -f ../build/hpvn-${i}_${arch}.sh
@@ -195,6 +203,7 @@ if [ "${clean}" = true ]; then
 	rm -rf ../../resources/icons
 	rm -rf ../../resources/index.html
 	rm -rf ../../resources/styles.css
+	rm -rf ../../bin
 fi
 
 echo -e "\e[1;44mDone!\e[1;m"
