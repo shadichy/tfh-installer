@@ -55,7 +55,7 @@ function states(){
             ptag[state-1].style.display = "flex"
             ptag[state].style.display = "none"
             ptag[state+1].style.display = "none"
-            inx.style.display = both==2?"none":"block"
+            inx.style.display = both==2?"block":"none"
             sct[0].style.display = "none"
             sct[1].style.display = "none"
             document.querySelector(`.not.javaFolder`).style.display = "none"
