@@ -22,7 +22,9 @@ main () {
       link="https://teamfuho.net/download/hpvn-${i}.tar.gz"
       filename="/tmp/hpvn-${i}.tar.gz"
     	if $(ck "${i}"); then
-        if ! wget -O "${filename}" -o /dev/null "${link}"; then
+        if [[ "$(command -v wget)" ]]; then
+          wget -O "${filename}" -o /dev/null "${link}"
+        else
           curl -sLo "${filename}" "${link}"
         fi
     	    if [[ ! -z "${javaFolder}" && "${i}" == "java" ]]; then
