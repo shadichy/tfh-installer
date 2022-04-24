@@ -73,7 +73,7 @@ function states(){
             sct[0].style.display = "block"
             sct[1].style.display = "block"
             // stat=false
-            mcrcpath=mcreply
+            for (const key of ["javaFolder","bedrockFolder","javaWorlds","bedrockWorlds"]) mcrcpath[key]=mcreply[key]
             usecustompath=true
             opt.style.display = "none"
             btnbar.style.display = "flex"
@@ -87,7 +87,7 @@ function states(){
                 state=3
                 return;
             }
-            usecustompath?info=mcrcpath:info=mcreply
+            info=(usecustompath?mcrcpath:mcreply)
             for (const i of ["java","bedrock"]) if (info[i + "Worlds"]) document.getElementById(i + "Final").style.visibility = "visible"
             for (const key of ["javaFolder","bedrockFolder","javaWorlds","bedrockWorlds"]) document.querySelector(`.final.${key}`).innerHTML = info[key]
             document.querySelector(`.not.javaFolder`).style.display = "none"
@@ -290,7 +290,7 @@ const checkPath = async (id)=>{
     pel.style.color = "#32cd32"
     if (mcrcpath.java && id.includes("java")) {
         pel.innerHTML = `T${a}Java</strong> bởi <strong>${checkLauncher(mcrcpath.JLauncher)}${b}`
-    } else if (mcreply.bedrock && id.includes("bedrock")) {
+    } else if (mcrcpath.bedrock && id.includes("bedrock")) {
         pel.innerHTML = `T${a}Bedrock${b}`
     } else {
         pel.innerHTML = `Không t${a}${b}`
