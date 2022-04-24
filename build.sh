@@ -14,24 +14,24 @@ get_args(){
 	while [[ "$1" ]];do
 		case $1 in
 			"--help" | "-h")
-				echo -e ""
-				echo -e "\e[1;44mUsage: ./build.sh [--help] [--clean] [--version] [--target=<target>] [--os=<os>]\e[1;m"
-				echo -e ""
-				echo -e "\e[1;44mOptions:\e[1;m"
-				echo -e ""
-				echo -e "\e[1;44m  -h,--help\e[1;m\t\t\tShow this help"
-				echo -e "\e[1;44m  -c,--clean\e[1;m\t\t\tClean the build directory"
-				echo -e "\e[1;44m  -V,--version\e[1;m\t\t\tShow the version"
-				echo -e "\e[1;44m  -D,--build-dir=<dir>\e[1;m\t\tBuild the binaries in the specified directory (default: ${workdir})"
-				echo -e "\e[1;44m  -t,--target=<target>\e[1;m\t\tBuild the specified target (default: all)"
-				echo -e "\t\t\t\tSupported targets: $(for i in "${target[@]}";do [[ "${i}" != "${target[0]}" ]] && printf ", " ;printf "${i}";done)"
-				echo -e "\e[1;44m  -s,--os=<os>\e[1;m\t\t\tBuild the specified os (default: all)"
-				echo -e "\t\t\t\tSupported os: $(for i in "${os[@]}";do [[ "${i}" != "${os[0]}" ]] && printf ", " ;printf "${i}";done)"
-				echo -e "\e[1;44m  -m,--arch=<arch>\e[1;m\t\t\tBuild the specified architecture (default: ${machine})"
-				echo -e "\t\t\t\tSupported architecture: x86_64, i686"
-				echo -e "\e[1;44m  -d,--debug\e[1;m\t\t\tBuild the debug version"
-				echo -e "\e[1;44m  -u,--update\e[1;m\t\t\tUpdate the binaries"
-				echo -e ""
+				printf "\n"
+				printf "\e[1;44mUsage: ./build.sh [--help] [--clean] [--version] [--target=<target>] [--os=<os>]\e[1;m\n"
+				printf "\n"
+				printf "\e[1;44mOptions:\e[1;m\n"
+				printf "\n"
+				printf "\e[1;44m  -h,--help\e[1;m\t\t\tShow this help\n"
+				printf "\e[1;44m  -c,--clean\e[1;m\t\t\tClean the build directory\n"
+				printf "\e[1;44m  -V,--version\e[1;m\t\t\tShow the version\n"
+				printf "\e[1;44m  -D,--build-dir=<dir>\e[1;m\t\tBuild the binaries in the specified directory (default: ${workdir})\n"
+				printf "\e[1;44m  -t,--target=<target>\e[1;m\t\tBuild the specified target (default: all)\n"
+				printf "\t\t\t\tSupported targets: $(for i in "${target[@]}";do [[ "${i}" != "${target[0]}" ]] && printf ", " ;printf "${i}";done)\n"
+				printf "\e[1;44m  -s,--os=<os>\e[1;m\t\t\tBuild the specified os (default: all)\n"
+				printf "\t\t\t\tSupported os: $(for i in "${os[@]}";do [[ "${i}" != "${os[0]}" ]] && printf ", " ;printf "${i}";done)\n"
+				printf "\e[1;44m  -m,--arch=<arch>\e[1;m\t\t\tBuild the specified architecture (default: ${machine})\n"
+				printf "\t\t\t\tSupported architecture: x86_64, i686\n"
+				printf "\e[1;44m  -d,--debug\e[1;m\t\t\tBuild the debug version\n"
+				printf "\e[1;44m  -u,--update\e[1;m\t\t\tUpdate the binaries\n"
+				printf "\n"
 				exit 0
 				;;
 			"--clean" | "-c")
@@ -69,8 +69,8 @@ get_args(){
 				workdir=$2
 				;;
 			"--version" | "-V")
-				echo -e "Current binaries version:\t$(neu version | grep 'Neutralinojs bin')\n\t\t\t\t$(neu version | grep 'Neutralinojs cli')"
-				echo -e "Current app version:\t\t$(cat ${workdir}/neutralino.config.json | grep '"version":' | sed 's/  "version": "//g' | sed 's/",//g')"
+				printf "Current binaries version:\t$(neu version | grep 'Neutralinojs bin')\n\t\t\t\t$(neu version | grep 'Neutralinojs cli')\n"
+				printf "Current app version:\t\t$(cat ${workdir}/neutralino.config.json | grep '"version":' | sed 's/  "version": "//g' | sed 's/",//g')\n"
 				exit 0
 				;;
 		esac
@@ -86,7 +86,7 @@ case ${machine} in
 		arch="ia32"
 		;;
 	*)
-		echo -e "\e[1;44mUnsupported architecture: ${machine}\e[1;m"
+		printf "\e[1;44mUnsupported architecture: ${machine}\e[1;m\n"
 		exit 1
 		;;
 esac
@@ -99,15 +99,15 @@ get_args "$@"
 cp -r ./resources/fonts ./out/resources/
 cp -r ./resources/icons ./out/resources/
 cp -r ./resources/res ./out/resources/
-echo -e "\e[1;44mCompiling the source...\e[1;m"
+printf "\e[1;44mCompiling the source...\e[1;m\n"
 node ./index.js ${node_args}
 
 cd out
 
-echo -e "\e[1;44mBuilding the binaries...\e[1;m"
+printf "\e[1;44mBuilding the binaries...\e[1;m\n"
 # Check if update variable is true then run `neu update`
 if [[ "${update}" == true ]];then
-	echo -e "\e[1;44mUpdating the binaries...\e[1;m"
+	printf "\e[1;44mUpdating the binaries...\e[1;m\n"
 	neu update
 	pnpm update
 else
@@ -137,10 +137,10 @@ for i in "${os[@]}"; do
 				mkdir "HappyVietnam.AppDir"
 			fi
 			if [ -f "../build/Happy_Vietnam_Installer-${machine}.AppImage" ]; then
-				echo -e "\e[1;44mRemove old AppImage\e[1;m"
+				printf "\e[1;44mRemove old AppImage\e[1;m\n"
 				rm "../build/Happy_Vietnam_Installer-${machine}.AppImage"
 			fi
-			echo -e "\e[1;44mBuilding AppImage...\e[1;m"
+			printf "\e[1;44mBuilding AppImage...\e[1;m\n"
 			cd "HappyVietnam.AppDir"
 			cat << EOF > AppRun
 #!/bin/sh
@@ -182,20 +182,20 @@ EOF
 			if [ "${i}" = "mac" ] && [ "${arch}" = "ia32" ]; then
 				continue
 			fi
-			echo -e "\e[1;44mCreate script for ${i} ${arch}\e[1;m"
+			printf "\e[1;44mCreate script for ${i} ${arch}\e[1;m\n"
 			tar -zcvf hpvn-${i}_${arch}.tar.gz install neofetch checkmc resources.neu hpvn-${i}_${arch} pack.png
 			rm -f ../build/hpvn-${i}_${arch}.sh
 			cat script.sh | sed -e "s/\${arch}/${arch}/g" | sed -e "s/\${os}/${i}/g" > ../build/hpvn-${i}_${arch}.sh
 			cat hpvn-${i}_${arch}.tar.gz >> ../build/hpvn-${i}_${arch}.sh
 			chmod +x ../build/hpvn-${i}_${arch}.sh
-			rm hpvn-${i}_${arch}.tar.gz
+			rm -f hpvn-${i}_${arch}.tar.gz
 		fi
 	done
 done
 
 # clean
 if [ "${clean}" = true ]; then
-	echo -e "\e[1;44mCleaning...\e[1;m"
+	printf "\e[1;44mCleaning...\e[1;m\n"
 	rm -rf ./*
 	rm -rf ../*.AppImage
 	rm -rf ../../resources/res
@@ -206,5 +206,5 @@ if [ "${clean}" = true ]; then
 	rm -rf ../../bin
 fi
 
-echo -e "\e[1;44mDone!\e[1;m"
+printf "\e[1;44mDone!\e[1;m\n"
 cd ${workdir}
