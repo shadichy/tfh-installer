@@ -30,7 +30,8 @@ let ostype = document.getElementById("os"),
     info={},
     response={},
     lim=0,
-    stage=0
+    stage=0,
+    nomc=false
 
 function states(){
     (state==3&&!pathedit)?(stat?state++:state--):pathedit=false
@@ -54,14 +55,15 @@ function states(){
             ptag[state-1].style.display = "flex"
             ptag[state].style.display = "none"
             ptag[state+1].style.display = "none"
-            inx.style.display = both!=1?"block":"none"
+            inx.style.display = both==2?"none":"block"
             sct[0].style.display = "none"
             sct[1].style.display = "none"
             document.querySelector(`.not.javaFolder`).style.display = "none"
             document.querySelector(`.not.bedrockFolder`).style.display = "none"
             stat=true
             usecustompath=false
-            opt.style.display = "block"
+            opt.style.display = "flex"
+            btnbar.style.display = nomc?"none":"flex"
             break;
         case 3:
             ptag[state-2].style.display = "none"
@@ -73,6 +75,7 @@ function states(){
             mcrcpath=mcreply
             usecustompath=true
             opt.style.display = "none"
+            btnbar.style.display = "flex"
             break;
         case 4:
             if (!document.getElementById("bedrockWorlds").value && !document.getElementById("javaWorlds").value) {
@@ -241,7 +244,7 @@ const checkMC = async ()=>{
             inx.style.display="none"
             elem.innerHTML = `Thiết bị của bạn dường như không có phiên bản <strong>Minecraft</strong> nào đã được cài đặt. Vui lòng cài đặt <strong>Minecraft</strong> và thử lại!`
             sel[0].style.display = "block"
-            btnbar.style.display = "none"
+            nomc=true
         }
     }
     inpRenew(mcreply)

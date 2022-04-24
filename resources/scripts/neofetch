@@ -111,7 +111,7 @@ get_distro() {
                 # Source the os-release file
                 for file in /etc/lsb-release /usr/lib/os-release \
                             /etc/os-release  /etc/openwrt_release; do
-                    source "$file" && break
+                    [[ -f "$file" ]] && (source "$file" && break)
                 done
 
                 # Format the distro name.

@@ -30,3 +30,4 @@ neutralino.js
 # Neutralinojs related files
 .storage
 *.log
+neutralino-*_*
