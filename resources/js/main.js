@@ -78,9 +78,10 @@ function states(){
             btnbar.style.display = "flex"
             break;
         case 4:
-            if (!document.getElementById("bedrockWorlds").value && !document.getElementById("javaWorlds").value) {
-                state--
-                break;
+            for (const i of ["java","bedrock"]) if (document.getElementById(i).checked && !document.getElementById(i + "Worlds").value) {
+                document.getElementById(i + "Worlds").style.borderColor = "red"
+                state=3
+                break
             }
             usecustompath?info=mcrcpath:info=mcreply
             for (const i of ["java","bedrock"]) if (info[i + "Worlds"]) document.querySelector(`#${i}Final`).style.display = "grid"                
