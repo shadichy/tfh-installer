@@ -25,7 +25,7 @@ osdir(){
 }
 
 mmcFind(){
-	echo "$(find "$1" \( -iname "multimc.cfg" -o -iname "ultimmc.cfg" -o -iname "polymc.cfg" \) -printf '%h\n' 2>/dev/null | sort -u | head -1)"
+	echo "$(find "$1" \( -iname "multimc.cfg" -o -iname "ultimmc.cfg" -o -iname "polymc.cfg" \) | sed -E 's|/[^/]+$||' | sort -u | head -1)"
 }
 
 mmc(){
