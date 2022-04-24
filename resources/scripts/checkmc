@@ -33,7 +33,7 @@ mmc(){
 		javaWorlds="$(ls -d $multimc/instances/*1.14.4* | head -1)/saves"
 		[[ $javaWorlds == "/saves" ]] && javaWorlds="$$multimc/instances/1.14.4/saves"
     else
-        javaWorlds=""
+        javaFolder=""
 	fi
 }
 
@@ -57,8 +57,6 @@ dircheck(){
         
     elif [[ -z $2 ]]; then
         mmc
-	else
-		javaFolder=""
     fi
 
     if [[ -d $bedrockFolder ]]; then
