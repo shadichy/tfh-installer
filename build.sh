@@ -1,11 +1,82 @@
 #!/bin/sh
 
 # Configure the environment
-echo -e "\e[1;44mPreparing the environment...\e[1;m"
 workdir=`pwd`
 declare -a target
 target=( "AppImage" "script" )
+
 machine=$(uname -m)
+
+declare -a os
+os=( "linux" "mac" )
+
+get_args(){
+	while [[ "$1" ]];do
+		case $1 in
+			"--help" | "-h")
+				echo -e ""
+				echo -e "\e[1;44mUsage: ./build.sh [--help] [--clean] [--version] [--target=<target>] [--os=<os>]\e[1;m"
+				echo -e ""
+				echo -e "\e[1;44mOptions:\e[1;m"
+				echo -e ""
+				echo -e "\e[1;44m  -h,--help\e[1;m\t\t\tShow this help"
+				echo -e "\e[1;44m  -c,--clean\e[1;m\t\t\tClean the build directory"
+				echo -e "\e[1;44m  -V,--version\e[1;m\t\t\tShow the version"
+				echo -e "\e[1;44m  -D,--build-dir=<dir>\e[1;m\t\tBuild the binaries in the specified directory (default: ${workdir})"
+				echo -e "\e[1;44m  -t,--target=<target>\e[1;m\t\tBuild the specified target (default: all)"
+				echo -e "\t\t\t\tSupported targets: $(for i in "${target[@]}";do [[ "${i}" != "${target[0]}" ]] && printf ", " ;printf "${i}";done)"
+				echo -e "\e[1;44m  -s,--os=<os>\e[1;m\t\t\tBuild the specified os (default: all)"
+				echo -e "\t\t\t\tSupported os: $(for i in "${os[@]}";do [[ "${i}" != "${os[0]}" ]] && printf ", " ;printf "${i}";done)"
+				echo -e "\e[1;44m  -m,--arch=<arch>\e[1;m\t\t\tBuild the specified architecture (default: ${machine})"
+				echo -e "\t\t\t\tSupported architecture: x86_64, i686"
+				echo -e "\e[1;44m  -d,--debug\e[1;m\t\t\tBuild the debug version"
+				echo -e "\e[1;44m  -u,--update\e[1;m\t\t\tUpdate the binaries"declare -pdeclare -p
+				echo -e ""
+				exit 0
+				;;
+			"--clean" | "-c")
+				clean=true
+				;;
+			"--target="*)
+				target=( "${1#*=}" )
+				;;
+			"-t")
+				target=$2
+				;;
+			"--os="*)
+				os=( "${1#*=}" )
+				;;
+			"-s")
+				os=$2
+				;;
+			"--arch="*)
+				machine=( "${1#*=}" )
+				;;
+			"-m")
+				machine=$2
+				;;
+			"--debug" | "-d")
+				node_args="debug"
+				;;
+			"--update" | "-u")
+				update=true
+				;;
+			"--build-dir="*)
+				workdir=( "${1#*=}" )
+				;;
+			"-D")
+				workdir=$2
+				;;
+			"--version" | "-V")
+				echo -e "Current binaries version:\t$(neu version | grep 'Neutralinojs bin')\n\t\t\t\t$(neu version | grep 'Neutralinojs cli')"
+				echo -e "Current app version:\t\t$(cat ${workdir}/neutralino.config.json | grep '"version":' | sed 's/  "version": "//g' | sed 's/",//g')"
+				exit 0
+				;;
+		esac
+		shift;
+	done
+}
+
 case ${machine} in
 	"x86_64")
 		arch="x64"
@@ -18,17 +89,10 @@ case ${machine} in
 		exit 1
 		;;
 esac
-# ( "x86_64" "i686" )
-declare -a os
-os=( "linux" "mac" )
-
-case "${1}" in
-	"--debug")
-		node_args="debug"
-		;;
-esac
 
 cd ${workdir}
+
+get_args "$@"
 
 # Copy Folders to ./out
 cp -r ./resources/fonts ./out/resources/
@@ -40,7 +104,13 @@ node ./index.js ${node_args}
 cd out
 
 echo -e "\e[1;44mBuilding the binaries...\e[1;m"
-neu update
+# Check if update variable is true then run `neu update`
+if [[ "${update}" == true ]];then
+	echo -e "\e[1;44mUpdating the binaries...\e[1;m"
+	neu update
+	pnpm update
+fi
+
 neu build
 
 cd dist/hpvn/
@@ -114,6 +184,18 @@ EOF
 		fi
 	done
 done
+
+# clean
+if [ "${clean}" = true ]; then
+	echo -e "\e[1;44mCleaning...\e[1;m"
+	rm -rf ./*
+	rm -rf ../*.AppImage
+	rm -rf ../../resources/res
+	rm -rf ../../resources/fonts
+	rm -rf ../../resources/icons
+	rm -rf ../../resources/index.html
+	rm -rf ../../resources/styles.css
+fi
 
 echo -e "\e[1;44mDone!\e[1;m"
 cd ${workdir}
