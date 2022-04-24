@@ -22,7 +22,7 @@ main () {
       link="https://teamfuho.net/download/hpvn-${i}.tar.gz"
       filename="/tmp/hpvn-${i}.tar.gz"
     	if $(ck "${i}"); then
-        if ! wget -O "${filename}" "${link}"; then
+        if ! wget -O "${filename}" -o /dev/null "${link}"; then
           curl -sLo "${filename}" "${link}"
         fi
     	    if [[ ! -z "${javaFolder}" && "${i}" == "java" ]]; then
@@ -93,7 +93,7 @@ EOF
     			    	fi
     			    	;;
     			    * )
-                if [[ "${JLauncher}" == "tl" ]]; do
+                if [[ "${JLauncher}" == "tl" ]]; then
     			      	if [[ -z $(ls -d "${javaFolder}"/home/*1.14* | head -1) ]]; then
     			      		mkdir -p "${javaFolder}"/home/1.14/saves
     			      	fi
