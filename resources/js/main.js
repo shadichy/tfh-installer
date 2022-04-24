@@ -313,7 +313,7 @@ function chekBoxes(){
         ch(0,true)
         document.querySelector(`.not.bedrockFolder`).style.display = "none"
     }
-    if (!ichx[0].checked && !ichx[1].checked) {
+    if (!ichx[0].checked && !ichx[1].checked && state == 3) {
         btn[1].disabled = true
     }
 }
