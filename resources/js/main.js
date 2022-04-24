@@ -186,13 +186,13 @@ const checkOS = async (cmd)=>{
 
 const startInstall = async (src)=>{
     let asd = await Neutralino.os.execCommand(`sh -c '\\
-isjava=${src.java} \\
-isbedrock=${src.bedrock} \\
-javaFolder=${src.javaFolder} \\
-bedrockFolder=${src.bedrockFolder} \\
-javaWorlds=${src.javaWorlds} \\
-bedrockWorlds=${src.bedrockWorlds} \\
-JLauncher=${src.JLauncher} \\
+isjava="${src.java}" \\
+isbedrock="${src.bedrock}" \\
+javaFolder="${src.javaFolder}" \\
+bedrockFolder="${src.bedrockFolder}" \\
+javaWorlds="${src.javaWorlds}" \\
+bedrockWorlds="${src.bedrockWorlds}" \\
+JLauncher="${src.JLauncher}" \\
 resources/scripts/install'`);
     if (asd.stdErr) {
         document.querySelector("#p6>h1").innerHTML = "Đã xảy ra lỗi"
