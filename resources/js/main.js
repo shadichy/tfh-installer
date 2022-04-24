@@ -78,6 +78,8 @@ function states(){
             opt.style.display = "none"
             btnbar.style.display = "flex"
             stat=false
+            inpRenew(mcreply)
+            chekBoxes()
             break;
         case 4:
             if (!stat) for (const i of ["java","bedrock"]) if (document.getElementById(i).checked && !document.getElementById(i + "Worlds").value) {
@@ -221,6 +223,7 @@ const checkFolder = async (dir)=>{
 
 }
 const checkMC = async ()=>{
+    btn[1].disabled = true
     let asd = await Neutralino.os.execCommand(`sh -c 'resources/scripts/checkmc ${NL_OS}'`);
     mcreply = JSON.parse(asd.stdOut)
     if (mcreply.java) {
@@ -252,6 +255,7 @@ const checkMC = async ()=>{
     }
     inpRenew(mcreply)
     chekBoxes()
+    btn[1].disabled = false
 }
 
 function inpRenew(data) {
