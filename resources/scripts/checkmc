@@ -25,13 +25,14 @@ osdir(){
 }
 
 mmcFind(){
-	echo "$(find "$1" \( -iname "multimc.cfg" -o -iname "ultimmc.cfg" -o -iname "polymc.cfg" \) | sed -E 's|/[^/]+$||' | sort -u | head -1)"
+	echo "$(find "$1" \( -iname "multimc.cfg" -o -iname "ultimmc.cfg" -o -iname "polymc.cfg" \)  2>/dev/null | sed -E 's|/[^/]+$||' | sort -u | head -1)"
 }
 
 mmc(){
 	multimc="$(mmcFind ~)"
 	[[ -z "${multimc}" && "$1" == "Darwin" ]] && multimc="$(mmcFind /Applications)"
-	dircheck "$1" "${multimc}"
+	javaFolder="${multimc}"
+	dircheck "$1"
 }
 
 bedfind(){
@@ -71,6 +72,8 @@ dircheck(){
 		
 	elif [[ -z "$2" ]]; then
 		mmc "$1"
+	else
+		javaFolder=""
 	fi
 
 	if [[ -d "${bedrockFolder}" ]]; then
@@ -83,6 +86,8 @@ dircheck(){
 		fi
 	elif [[ -z "$2" ]]; then
 		bedfind
+	else
+		bedrockFolder=""
 	fi
 }
 
