@@ -100,8 +100,10 @@ cp -r ./resources/fonts ./out/resources/
 cp -r ./resources/icons ./out/resources/
 cp -r ./resources/res ./out/resources/
 
-if [[ "$(ls -A ./bin)" ]];then
-	
+if [[ ! "$(ls -A ./bin)" ]];then
+	# running for the first time
+	printf 	"\e[1;44mRunning for the first time\e[1;m\n"
+	update=true
 fi
 
 printf "\e[1;44mCompiling the source...\e[1;m\n"
