@@ -25,9 +25,7 @@ main () {
       if [[ ! -z "${javaFolder}" && "${i}" == "java" ]]; then
       	case "${JLauncher}" in
       		"multimc" )
-      			if [[ -z $(ls -d "${javaFolder}"/instances/*1.14.4* | head -1) ]]; then
-      				mkdir -p "${javaFolder}/instances/1.14.4/.minecraft/saves"
-  	  				cat <<EOF > "${javaFolder}/instances/1.14.4/mmc-pack.json"
+			    cat <<EOF > "$(ls -d "${javaFolder}"/instances/*1.14.4* 2>/dev/null | head -1)"/mmc-pack.json
 {
     "components": [
         {
@@ -57,7 +55,7 @@ main () {
 }
 
 EOF
-					    cat <<EOF > "${javaFolder}/instances/1.14.4/instance.cfg"
+					cat <<EOF > "$(ls -d "${javaFolder}"/instances/*1.14.4* 2>/dev/null | head -1)"/instance.cfg
 ForgeVersion=
 InstanceType=OneSix
 IntendedVersion=
@@ -86,18 +84,13 @@ notes=
 totalTimePlayed=
 
 EOF
-    	    		cp pack.png "${javaFolder}/instances/1.14.4/"
-    	    	fi
-    	    	;;
+    	    	cp pack.png "$(ls -d "${javaFolder}"/instances/*1.14.4* 2>/dev/null | head -1)"/
+    	    fi
+    	    ;;
     	    * )
-            if [[ "${JLauncher}" == "tl" ]]; then
-    	      	if [[ -z $(ls -d "${javaFolder}"/home/*1.14* | head -1) ]]; then
-    	      		mkdir -p "${javaFolder}/home/1.14/saves"
-    	      	fi
-            fi
-    	    	if [[ -z $(ls -d "${javaFolder}"/versions/*1.14* | head -1) ]]; then
-    	    		mkdir -p "${javaFolder}/versions/Happy Vietnam 1.14.4"
-    	    		cat <<EOF > "${javaFolder}/versions/Happy Vietnam 1.14.4/Happy Vietnam 1.14.4.json"
+    	    if [[ -z $(ls -d "${javaFolder}"/versions/*1.14* 2>/dev/null | head -1) ]]; then
+    	    	mkdir -p "${javaFolder}/versions/Happy Vietnam 1.14.4"
+    	    	cat <<EOF > "${javaFolder}/versions/Happy Vietnam 1.14.4/Happy Vietnam 1.14.4.json"
 {
   "id": "Happy Vietnam 1.14.4",
   "family": "1.14",
@@ -1437,11 +1430,11 @@ EOF
   }
 }
 EOF
-    	    	fi
-    	    	;;
+    	    fi
+    	    ;;
   	    esac
   	  fi
-  	  tar -xzf "${filename}" -C $(wr "${i}")
+  	  tar -xzf "${filename}" -C "$(wr "${i}")"
 
       if [ $? -eq 0 ]; then
           rm -f "${filename}"

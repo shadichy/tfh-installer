@@ -30,16 +30,8 @@ mmcFind(){
 
 mmc(){
 	multimc="$(mmcFind ~)"
-	[[ -z "${multimc}" && "$1" == "Darwin" ]] && multimc="4(mmcFind() /Applications)"
-	if [[ ! -z "${multimc}" ]]; then
-		java=true
-		javaFolder="${multimc}"
-		JLauncher="multimc"
-		javaWorlds="$(ls -d "${multimc}"/instances/*1.14.4* 2>/dev/null | head -1)/saves"
-		[[ "${javaWorlds}" == "/saves" ]] && javaWorlds="${multimc}/instances/1.14.4/saves"
-	else
-		javaFolder=""
-	fi
+	[[ -z "${multimc}" && "$1" == "Darwin" ]] && multimc="$(mmcFind /Applications)"
+	dircheck "$1" "${multimc}"
 }
 
 bedfind(){
@@ -57,12 +49,14 @@ dircheck(){
 	if [[ -d "${javaFolder}" ]]; then
 		if [[ -d "${javaFolder}/home" ]]; then
 			JLauncher="tl"
-			javaWorlds="$(ls -d "${javaFolder}"/home/*1.14* 2>/dev/null | head -1)/saves"
-			[[ "${javaWorlds}" == "/saves" ]] && javaWorlds="${javaFolder}/home/1.14/saves"
+			dir="$(ls -d "${javaFolder}"/home/*1.14* 2>/dev/null | head -1)"
+			[[ ! -z "${dir}" ]] && javaWorlds="${dir}/saves" || javaWorlds="${javaFolder}/home/1.14/saves"
+			mkdir -p "${javaWorlds}"
 		elif [[ -d "${javaFolder}/instances" ]];then
 			JLauncher="multimc"
-			javaWorlds="$(ls -d "${javaFolder}"/instances/*1.14.4* 2>/dev/null | head -1)/saves"
-			[[ "${javaWorlds}" == "/saves" ]] && javaWorlds="${javaFolder}/instances/1.14.4/saves"
+			dir="$(ls -d "${javaFolder}"/instances/*1.14.4* 2>/dev/null | head -1)"
+			[[ ! -z "${dir}" ]] && javaWorlds="${dir}/saves" || javaWorlds="${javaFolder}/instances/1.14.4/.minecraft/saves"
+			mkdir -p "${javaWorlds}"
 		else
 			JLauncher="default"
 			javaWorlds="${javaFolder}/saves"

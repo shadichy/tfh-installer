@@ -213,11 +213,16 @@ div#cls > section > h3{
 .p#p5 > section > h3{
     margin-top: 2.2vh;
 }
-.p#p5 > section{display: none;}
+.p#p5 > section{
+    display: none;
+}
 div#cls > section > strong{
+    display: inline-block;
     text-align: left;
     font-size: 3.2vh;
-    overflow: auto;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 div#cls > section > p{
     margin: 0;

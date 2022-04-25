@@ -42,13 +42,13 @@ get_args(){
 				target=( "${1#*=}" )
 				;;
 			"-t")
-				target=$2
+				target=( "$2" )
 				;;
 			"--os="*)
 				os=( "${1#*=}" )
 				;;
 			"-s")
-				os=$2
+				os=( "$2" )
 				;;
 			"--arch="*)
 				machine=( "${1#*=}" )
@@ -99,6 +99,11 @@ get_args "$@"
 cp -r ./resources/fonts ./out/resources/
 cp -r ./resources/icons ./out/resources/
 cp -r ./resources/res ./out/resources/
+
+if [[ "$(ls -A ./bin)" ]];then
+	
+fi
+
 printf "\e[1;44mCompiling the source...\e[1;m\n"
 node ./index.js ${node_args}
 
@@ -118,7 +123,7 @@ fi
 neu build
 
 cd dist/hpvn/
-mv ../../resources/res/pack.png .
+mv ../../../resources/res/pack.png .
 cp ../../../resources/scripts/* .
 chmod +x install
 chmod +x checkmc
