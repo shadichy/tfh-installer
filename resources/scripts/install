@@ -84,8 +84,7 @@ notes=
 totalTimePlayed=
 
 EOF
-    	    	cp pack.png "$(ls -d "${javaFolder}"/instances/*1.14.4* 2>/dev/null | head -1)"/
-    	    fi
+    	    cp pack.png "$(ls -d "${javaFolder}"/instances/*1.14.4* 2>/dev/null | head -1)"/
     	    ;;
     	    * )
     	    if [[ -z $(ls -d "${javaFolder}"/versions/*1.14* 2>/dev/null | head -1) ]]; then
