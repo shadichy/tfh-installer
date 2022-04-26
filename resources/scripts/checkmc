@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Default variables
 java=false
@@ -31,6 +31,7 @@ mmcFind(){
 mmc(){
 	multimc="$(mmcFind ~)"
 	[[ -z "${multimc}" && "$1" == "Darwin" ]] && multimc="$(mmcFind /Applications)"
+	[[ -z "${multimc}" && "$1" == "Darwin" ]] && multimc="$(mmcFind /Library/Application\ Support)"
 	javaFolder="${multimc}"
 	dircheck "$1"
 }

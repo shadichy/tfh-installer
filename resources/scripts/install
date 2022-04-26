@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 declare -a edition
 edition=("java" "bedrock") # for (java bedrock)
@@ -25,7 +25,8 @@ main () {
       if [[ ! -z "${javaFolder}" && "${i}" == "java" ]]; then
       	case "${JLauncher}" in
       		"multimc" )
-			    cat <<EOF > "$(ls -d "${javaFolder}"/instances/*1.14.4* 2>/dev/null | head -1)"/mmc-pack.json
+          root="$(ls -d "${javaFolder}"/instances/*1.14.4* 2>/dev/null | head -1)"
+			    cat <<EOF > "${root}"/mmc-pack.json
 {
     "components": [
         {
@@ -55,7 +56,7 @@ main () {
 }
 
 EOF
-					cat <<EOF > "$(ls -d "${javaFolder}"/instances/*1.14.4* 2>/dev/null | head -1)"/instance.cfg
+					cat <<EOF > "${root}"/instance.cfg
 ForgeVersion=
 InstanceType=OneSix
 IntendedVersion=
@@ -84,12 +85,14 @@ notes=
 totalTimePlayed=
 
 EOF
-    	    cp pack.png "$(ls -d "${javaFolder}"/instances/*1.14.4* 2>/dev/null | head -1)"/
+    	    cp pack.png "${root}"/
     	    ;;
     	    * )
-    	    if [[ -z $(ls -d "${javaFolder}"/versions/*1.14* 2>/dev/null | head -1) ]]; then
-    	    	mkdir -p "${javaFolder}/versions/Happy Vietnam 1.14.4"
-    	    	cat <<EOF > "${javaFolder}/versions/Happy Vietnam 1.14.4/Happy Vietnam 1.14.4.json"
+    	    if [[ -z "$(ls -d "${javaFolder}"/versions/*1.14* 2>/dev/null | head -1)" ]]; then
+            nver="Happy Vietnam 1.14.4"
+            root="${javaFolder}/versions/${nver}"
+    	    	mkdir -p "${root}"
+    	    	cat <<EOF > "${root}/${nver}.json"
 {
   "id": "Happy Vietnam 1.14.4",
   "family": "1.14",

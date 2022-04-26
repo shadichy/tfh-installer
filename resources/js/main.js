@@ -14,16 +14,8 @@ let ostype = document.getElementById("os"),
     state = 1,
     mcreply = {},
     mcrcpath = {},
-    ptag = document.getElementsByClassName("p"),
-    btn = document.querySelectorAll("#btnbar > button"),
-    btnbar = document.getElementById("btnbar"),
     both = 0,
     stat=true,
-    inx = document.querySelector("div#sel"),
-    sct = document.querySelectorAll("div#sel > section"),
-    ichx = document.querySelectorAll("div#sel > label > input"),
-    opt = document.querySelector("div#btn"),
-    sel = document.querySelectorAll("div#btn > button"),
     pathedit = false,
     unavail = "",
     usecustompath=false,
@@ -32,6 +24,17 @@ let ostype = document.getElementById("os"),
     lim=0,
     stage=0,
     nomc=false
+
+const vers=["java","bedrock"],
+    keys=["javaFolder","bedrockFolder","javaWorlds","bedrockWorlds"],
+    ptag = document.getElementsByClassName("p"),
+    btn = document.querySelectorAll("#btnbar > button"),
+    btnbar = document.getElementById("btnbar"),
+    inx = document.querySelector("div#sel"),
+    sct = document.querySelectorAll("div#sel > section"),
+    ichx = document.querySelectorAll("div#sel > label > input"),
+    opt = document.querySelector("div#btn"),
+    sel = document.querySelectorAll("div#btn > button")
 
 function states(){
     (state==3&&!pathedit)?(stat?state++:state--):pathedit=false
@@ -73,7 +76,7 @@ function states(){
             sct[0].style.display = "block"
             sct[1].style.display = "block"
             // stat=false
-            for (const key of ["javaFolder","bedrockFolder","javaWorlds","bedrockWorlds"]) mcrcpath[key]=mcreply[key]
+            for (const key of keys) mcrcpath[key]=mcreply[key]
             usecustompath=true
             opt.style.display = "none"
             btnbar.style.display = "flex"
@@ -82,14 +85,14 @@ function states(){
             chekBoxes()
             break;
         case 4:
-            if (!stat) for (const i of ["java","bedrock"]) if (document.getElementById(i).checked && !document.getElementById(i + "Worlds").value) {
+            if (!stat) for (const i of vers) if (document.getElementById(i).checked && !document.getElementById(i + "Worlds").value) {
                 document.getElementById(i + "Worlds").style.borderColor = "red"
                 state=3
                 return;
             }
             info=(usecustompath?mcrcpath:mcreply)
-            for (const i of ["java","bedrock"]) if (info[i + "Worlds"]) document.getElementById(i + "Final").style.visibility = "visible"
-            for (const key of ["javaFolder","bedrockFolder","javaWorlds","bedrockWorlds"]) document.querySelector(`.final.${key}`).innerHTML = info[key]
+            for (const i of vers) if (info[i + "Worlds"]) document.getElementById(i + "Final").style.visibility = "visible"
+            for (const key of keys) document.querySelector(`.final.${key}`).innerHTML = info[key]
             document.querySelector(`.not.javaFolder`).style.display = "none"
             document.querySelector(`.not.bedrockFolder`).style.display = "none"
             ptag[state-3].style.display = "none"
@@ -109,7 +112,7 @@ function states(){
                 break;
             }
             startInstall(info)
-            for (const i of ["java","bedrock"]) {
+            for (const i of vers) {
                 if (info[i + "Worlds"]) {
                     document.querySelector(`#${i}Install`).style.display = "block"
                     lim++
@@ -129,7 +132,6 @@ function states(){
 
 const loadInstall = async (w)=>{
     let ps = document.getElementsByClassName("percent"),
-        vers = ["java","bedrock"],
         defc = [20,20],
         d = [20,42,56,84,96],
         t = [20,10,15,10],
@@ -154,7 +156,6 @@ const loadInstall = async (w)=>{
                     ps[i].style.width = e + "%"
                     if (e<p) {
                         setTimeout(f,1)
-                        // console.log("updating")
                     } else if (e==p) {
                         if (g+1!=d.length){
                             g++
@@ -173,6 +174,24 @@ const loadInstall = async (w)=>{
         i==0?t=2000:t=3000
         if (w == vers[i]) setTimeout(()=>{prog(i)},t)
     }
+}
+
+function rol(){
+    let gsa=document.querySelectorAll('#btnbar span'),
+        i=0,
+        x=0
+    function get_rol(){
+        i==90?i=0:i++
+        x==60?x=0:x++
+        gsa[0].style.transform=`rotate(${4*i}deg)`
+        gsa[1].style.transform=`rotate(${-(4*i + 6*x)}deg)`
+        if (Object.keys(mcreply).length){
+            gsa[0].style.display = "none"
+            return
+        }
+        setTimeout(get_rol,1)
+    }
+    get_rol()
 }
 
 function openLink(link) {
@@ -224,6 +243,7 @@ const checkFolder = async (dir)=>{
 }
 const checkMC = async ()=>{
     btn[1].disabled = true
+    rol()
     let asd = await Neutralino.os.execCommand(`sh -c 'resources/scripts/checkmc ${NL_OS}'`);
     mcreply = JSON.parse(asd.stdOut)
     if (mcreply.java) {
@@ -259,7 +279,7 @@ const checkMC = async ()=>{
 }
 
 function inpRenew(data) {
-    for (const key of ["javaFolder","bedrockFolder","javaWorlds","bedrockWorlds"]) {
+    for (const key of keys) {
         document.querySelector(`input#${key}`).value = data[key]
     }
 }

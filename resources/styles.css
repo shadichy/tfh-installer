@@ -168,6 +168,7 @@ div#btnbar{
     display: flex;
     justify-content: right;
     right: 0;
+    align-items: center;
 }
 div#btnbar > button, div#btn button, div#sel > section > div > button, .p#p6 > div > button{
 	/* width: fit-content; */
@@ -193,6 +194,17 @@ div#btnbar > button:last-child, .p#p6 > div > button{
 }
 div#btnbar > button:disabled{
     opacity: .6;
+}
+div#btnbar span{
+    height: 6vh;
+    width: 6vh;
+    border-radius: 50%;
+    border: .7vh solid rgba(43,43,43,.25);
+    border-top-color: transparent;
+    display: block;
+}
+div#btnbar > span > span{
+    margin: -.7vh;
 }
 div#cls > section{
     display: grid; /* grid */

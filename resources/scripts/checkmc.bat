@@ -15,8 +15,11 @@ IF [[ ! -z "%~1" ]] (
   SET bedrockFolder="%~1"
   return
 )
-SET javaFolder=%APPDATA%\%CD%minecraft
+SET javaFolder=%APPDATA%\.minecraft
 SET bedrockFolder=%localappdata%\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang
+EXIT /B 0
+
+:mmcFind
 EXIT /B 0
 
 :mmc
@@ -43,44 +46,69 @@ IF [[ ! -z "%beddir%" ]] (
 )
 EXIT /B 0
 
+:mmc
+SET multimc="%undefined%"
+[[ "-z" "%multimc%" && "$1" == "Darwin" "]]" && SET multimc="%undefined%"
+[[ "-z" "%multimc%" && "$1" == "Darwin" "]]" && SET multimc="%undefined%"
+SET javaFolder="%multimc%"
+CALL :dircheck "%~1"
+EXIT /B 0
+
+:bedfind
+SET beddir="%undefined%"
+IF [[ "!" "-z" "%beddir%" "]]" (
+  SET bedrock=true
+  SET bedrockFolder="%beddir%"
+  SET bedrockWorlds="%bedrockFolder%\minecraftWorlds"
+) ELSE (
+  SET bedrockFolder=
+)
+EXIT /B 0
+
 :dircheck
-IF [[ -d "%javaFolder%" ]] (
-  IF [[ -d "%javaFolder%\home" ]] (
+IF [[ "-d" "%javaFolder%" "]]" (
+  IF [[ "-d" "%javaFolder%\home" "]]" (
     SET JLauncher=tl
-    SET javaWorlds="%undefined%\saves"
-    [[ "%javaWorlds%" == \saves ]] && SET javaWorlds="%javaFolder%\home\1.14\saves"
+    SET dir="%undefined%"
+    [[ "!" "-z" "%dir%" "]]" && SET javaWorlds="%dir%\saves" || SET javaWorlds="%javaFolder%\home\1.14\saves"
+    mkdir "-p" "%javaWorlds%"
   ) ELSE (
-    IF [[ -d "%javaFolder%\instances" ]] (
+    IF [[ "-d" "%javaFolder%\instances" "]]" (
       SET JLauncher=multimc
-      SET javaWorlds="%undefined%\saves"
-      [[ "%javaWorlds%" == \saves ]] && SET javaWorlds="%javaFolder%\instances\1.14.4\saves"
+      SET dir="%undefined%"
+      [[ "!" "-z" "%dir%" "]]" && SET javaWorlds="%dir%\saves" || SET javaWorlds="%javaFolder%\instances\1.14.4\%CD%minecraft\saves"
+      mkdir "-p" "%javaWorlds%"
     ) ELSE (
       SET JLauncher=default
       SET javaWorlds="%javaFolder%\saves"
     )
   )
-  IF [[ -d "%javaWorlds%" ]] (
+  IF [[ "-d" "%javaWorlds%" "]]" (
     SET java=true
   ) ELSE (
     SET javaWorlds=
-    [[ -z "%~1" ]] && CALL :mmc
+    [[ "-z" "%~2" "]]" && CALL :mmc "%~1"
   )
 ) ELSE (
-  IF [[ -z "%~1" ]] (
-    CALL :mmc
+  IF [[ "-z" "%~2" "]]" (
+    CALL :mmc "%~1"
+  ) ELSE (
+    SET javaFolder=
   )
 )
-IF [[ -d "%bedrockFolder%" ]] (
+IF [[ "-d" "%bedrockFolder%" "]]" (
   SET bedrockWorlds="%bedrockFolder%\minecraftWorlds"
-  IF [[ -d "%bedrockWorlds%" ]] (
+  IF [[ "-d" "%bedrockWorlds%" "]]" (
     SET bedrock=true
   ) ELSE (
     SET bedrockWorlds=
-    [[ -z "%~1" ]] && CALL :bedfind
+    [[ "-z" "%~2" "]]" && CALL :bedfind
   )
 ) ELSE (
-  IF [[ -z "%~1" ]] (
+  IF [[ "-z" "%~2" "]]" (
     CALL :bedfind
+  ) ELSE (
+    SET bedrockFolder=
   )
 )
 EXIT /B 0

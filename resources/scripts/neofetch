@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 shopt -s eval_unsafe_arith &>/dev/null
 
 sys_locale=${LANG:-C}

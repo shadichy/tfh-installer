@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # define the tasks that need to be done with the extracted content
 process_tar() {
