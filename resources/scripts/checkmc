@@ -25,13 +25,34 @@ osdir(){
 }
 
 mmcFind(){
-	echo "$(find "$1" \( -iname "multimc.cfg" -o -iname "ultimmc.cfg" -o -iname "polymc.cfg" \)  2>/dev/null | sed -E 's|/[^/]+$||' | sort -u | head -1)"
+	# array of possible locations using find command
+	declare dir
+	dir=("$(find "${1}" -type d \( -iname "multimc" -o -iname "ultimmc" -o -iname "polymc" \) 2>/dev/null)")
+	for d in "${dir[@]}"; do
+		filepath="$(find "$1" -type f \( -iname "multimc.cfg" -o -iname "ultimmc.cfg" -o -iname "polymc.cfg" \)  2>/dev/null | sed -E 's|/[^/]+$||' | head -1)"
+		[[ -z "${filepath}" ]] && continue
+		echo "${filepath}"
+	done
+	# [[ ! -z "${dir}" ]] && echo "$(find "${dir1}" -type f \( -iname "multimc.cfg" -o -iname "ultimmc.cfg" -o -iname "polymc.cfg" \)  2>/dev/null | sed -E 's|/[^/]+$||' | head -1)"
+
+	# echo "$(find "$1" \( -iname "multimc.cfg" -o -iname "ultimmc.cfg" -o -iname "polymc.cfg" \)  2>/dev/null | sed -E 's|/[^/]+$||' | sort -u | head -1)"
 }
 
 mmc(){
-	multimc="$(mmcFind ~)"
-	[[ -z "${multimc}" && "$1" == "Darwin" ]] && multimc="$(mmcFind /Applications)"
-	[[ -z "${multimc}" && "$1" == "Darwin" ]] && multimc="$(mmcFind /Library/Application\ Support)"
+	# array of possible multimc.cfg paths
+	declare -a paths
+	case "$1" in
+		"Darwin")
+			paths=( "/Applications" ~/"Library/Application Support" ~/"Downloads" ~ )
+			;;
+		*)
+			paths=( ~/"Downloads" ~/".local/share" ~ )
+			;;
+	esac
+	for path in "${paths[@]}"; do
+		multimc="$(mmcFind "${path}")"
+		[[ ! -z "${multimc}" ]] && break
+	done
 	javaFolder="${multimc}"
 	dircheck "$1"
 }
@@ -48,6 +69,8 @@ bedfind(){
 }
 
 dircheck(){
+	[[ -z "${javaFolder}" ]] && return
+	[[ -z "${bedrockFolder}" ]] && return
 	if [[ -d "${javaFolder}" ]]; then
 		if [[ -d "${javaFolder}/home" ]]; then
 			JLauncher="tl"
