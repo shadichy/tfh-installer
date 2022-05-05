@@ -10,16 +10,22 @@ echo "{\"java\":%java%,\"bedrock\":%bedrock%,\"javaFolder\":\"%javaFolder%\",\"b
 EXIT /B %ERRORLEVEL%
 
 :osdir
-IF [[ ! -z "%~1" ]] (
+IF defined "%~1" (
   SET javaFolder="%~1"
   SET bedrockFolder="%~1"
-  return
+  GOTO :EOF
 )
 SET javaFolder=%APPDATA%\.minecraft
 SET bedrockFolder=%localappdata%\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang
 EXIT /B 0
 
 :mmcFind
+FOR /D %%D IN ('dir "%~1" /b /ad multimc ultimmc polymc /s') DO
+  FOR /D %%F IN ('dir "%%B" /b /ad multimc.cfg ultimmc.cfg polymc.cfg /s') DO
+    echo %%F
+    GOTO :EOF
+  GOTO :EOF
+GOTO :EOF
 EXIT /B 0
 
 :mmc

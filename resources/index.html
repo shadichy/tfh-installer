@@ -61,12 +61,12 @@
               <div>
                 <p>Thư mục gốc: </p>
                 <input type="text" name="javaFolder" id="javaFolder">
-                <button onclick="selFolder('javaFolder')">Mở</button>
+                <button onclick="main.constructor.detect.selFolder('javaFolder')">Mở</button>
               </div>
               <div>
                 <p>Vị trí lưu: </p>
                 <input type="text" name="javaWorlds" id="javaWorlds">
-                <button onclick="selFolder('javaWorlds')">Mở</button>
+                <button onclick="main.constructor.detect.selFolder('javaWorlds')">Mở</button>
               </div>
             </section>
             <label for="bedrock"><input type="checkbox" name="bedrock" id="bedrock" onchange="chekBoxes()"><strong class="ora">Happy Vietnam</strong> phiên bản <strong>Minecraft Bedrock</strong></label>
@@ -75,18 +75,18 @@
               <div>
                 <p>Thư mục gốc: </p>
                 <input type="text" name="bedrockFolder" id="bedrockFolder">
-                <button onclick="selFolder('bedrockFolder')">Mở</button>
+                <button onclick="main.constructor.detect.selFolder('bedrockFolder')">Mở</button>
               </div>
               <div>
                 <p>Vị trí lưu: </p>
                 <input type="text" name="bedrockWorlds" id="bedrockWorlds">
-                <button onclick="selFolder('bedrockWorlds')">Mở</button>
+                <button onclick="main.constructor.detect.selFolder('bedrockWorlds')">Mở</button>
               </div>
             </section>
           </div>
           <div id="btn">
             <button onclick="Neutralino.app.exit()" style="display: none;margin: 2vh;">Thoát</button>
-            <button onclick="pathedit=true;state=3;states()" style="margin: 2vh;">Chỉnh sửa</button>
+            <button onclick="main.constructor.pathedit=true;main.constructor.state=3;main.constructor.states()" style="margin: 2vh;">Chỉnh sửa</button>
           </div>
           <div class="p" id="p4">
             <h1>Tổng quan</h1>
@@ -169,8 +169,8 @@ Liên hệ bản quyền và thương mại: <button onclick="openLink('facebook
             <span>
               <span></span>
             </span>
-            <button onclick="state--;states()">Thoát</button>
-            <button onclick="state++;states()">Bắt đầu</button><!--  onclick="document.getElementById('p0').style.display='none';document.getElementById('p1').style.display='block'" -->
+            <button onclick="main.constructor.chState(false)">Thoát</button>
+            <button onclick="main.constructor.chState(true)">Bắt đầu</button><!--  onclick="document.getElementById('p0').style.display='none';document.getElementById('p1').style.display='block'" -->
           </div>
         </section>
       </div>
