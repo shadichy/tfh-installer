@@ -217,7 +217,7 @@ for i in "${os[@]}"; do
 				fi
 				# convert x64 to x86_64, ia32 to i386
 				machine=${m//x64/x86_64}
-				machine=${machine//ia32/i386}
+				machine=${machine//ia32/i686}
 
 				if [ -f "../build/Happy_Vietnam_Installer-${machine}.AppImage" ]; then
 					printf "\e[1;44mRemove old AppImage\e[1;m\n"
@@ -253,9 +253,9 @@ EOF
 				cp ../../hpvn/resources.neu .
 				cp ../../hpvn/pack.png .
 				cd ../
-				[[ ! -f ../appimagetool-${machine}.AppImage ]] && curl -L -o ../appimagetool-${machine}.AppImage https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-${machine}.AppImage
+				[[ ! -f ../appimagetool-${machine}.AppImage ]] && curl -L -o ../appimagetool-${machine}.AppImage https://github.com/AppImage/AppImageKit/releases/latest/download/appimagetool-${machine}.AppImage
 				chmod +x ../appimagetool-${machine}.AppImage
-				ARCH=${machine} ../appimagetool-${machine}.AppImage $(pwd)/HappyVietnam.AppDir  --mksquashfs-opt -quiet
+				ARCH=${machine} ../appimagetool-${machine}.AppImage $(pwd)/HappyVietnam.AppDir # --mksquashfs-opt -quiet
 				rm -rf HappyVietnam.AppDir
 				cd ${current_dir}
 			
