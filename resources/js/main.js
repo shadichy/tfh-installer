@@ -518,7 +518,7 @@ class TFHInstaller {
         checkOS: async()=>{
             try {
                 // console.log(this)
-                const asd = await Neutralino.os.execCommand(NL_OS=="Windows"?"ver":"sh -c 'resources/scripts/neofetch'")
+                const asd = await Neutralino.os.execCommand(NL_OS=="Windows"?"ver":"sh -c 'resources/scripts/neofetch.sh'")
                 document.getElementById("os").innerHTML = asd.stdOut
             } catch (e) {
                 console.log(e)
@@ -543,7 +543,7 @@ class TFHInstaller {
                         setTimeout(get_rol,1)
                     }
                 get_rol()
-                const asd = await Neutralino.os.execCommand(NL_OS=="Windows"?`resources/scripts/checkmc.bat`:`sh -c 'resources/scripts/checkmc ${NL_OS}'`)
+                const asd = await Neutralino.os.execCommand(NL_OS=="Windows"?`resources/scripts/checkmc.bat`:`sh -c 'resources/scripts/checkmc.sh ${NL_OS}'`)
                 this.mcreply = JSON.parse(asd.stdOut)
                 if (this.mcreply.java) ichx[0].checked = true
                 if (this.mcreply.bedrock) ichx[1].checked = true
@@ -580,13 +580,17 @@ class TFHInstaller {
                     pal = document.getElementById(iw),
                     a="ìm thấy phiên bản <strong style='color:inherit'>Minecraft ",
                     b="</strong> hợp lệ",
-                    asd = await Neutralino.os.execCommand(NL_OS=="Windows"?`resources/scripts/checkmc.bat ${document.getElementById(id).value}`:`sh -c 'resources/scripts/checkmc ${NL_OS} ${document.getElementById(id).value}'`);
+                    pval=document.getElementById(id).value,
+                    exe="resources/scripts/checkmc."
+                    asd = await Neutralino.os.execCommand(NL_OS=="Windows"?`${exe}bat ${pval}`:`sh -c '${exe}sh ${NL_OS} ${pval}'`);
                 this.mcrcpath = JSON.parse(asd.stdOut)
                 pal.value = this.mcrcpath[iw]
                 pel.style.display = "block"
                 pel.style.color = "#32cd32"
-                if (this.mcrcpath.java && id.includes("java")) pel.innerHTML = `T${a}Java</strong> bởi <strong>${this.checkLauncher(this.mcrcpath.JLauncher)}${b}.`
-                else if (this.mcrcpath.bedrock && id.includes("bedrock")) pel.innerHTML = `T${a}Bedrock${b}.`
+                if (this.mcrcpath.java && id.includes("java")) 
+                    pel.innerHTML = `T${a}Java</strong> bởi <strong>${this.checkLauncher(this.mcrcpath.JLauncher)}${b}.`
+                else if (this.mcrcpath.bedrock && id.includes("bedrock")) 
+                    pel.innerHTML = `T${a}Bedrock${b}.`
                 else {
                     pel.innerHTML = `Không t${a}${b}!`
                     pel.style.color = "red"
@@ -600,8 +604,10 @@ class TFHInstaller {
                 const tar = await Neutralino.os.showFolderDialog("Chọn thư mục")
                 document.getElementById(dir).value = tar
                 document.getElementById(dir.split("Worlds")[0]).checked=true
-                if (dir.includes("Folder")) this.detect.checkPath(dir)
-                else document.querySelector(`.not.${dir.split("Worlds")[0]+"Folder"}`).style.display = "none"
+                if (dir.includes("Folder")) 
+                    this.detect.checkPath(dir)
+                else 
+                    document.querySelector(`.not.${dir.split("Worlds")[0]+"Folder"}`).style.display = "none"
                 if (dir.includes("Worlds")) {
                     this.mcrcpath[dir.split("Worlds")[0]] = true
                     this.mcrcpath[dir] = tar
@@ -658,7 +664,16 @@ class TFHInstaller {
         },
         startInstall: async(src)=>{
             try {
-                const asd = await Neutralino.os.execCommand(`sh -c '\\
+                const asd = await Neutralino.os.execCommand(NL_OS=="Windows"?`
+set isjava="${src.java}" && \\
+set isbedrock="${src.bedrock}" && \\
+set javaFolder="${src.javaFolder}" && \\
+set bedrockFolder="${src.bedrockFolder}" && \\
+set Worldsjava="${src.javaWorlds}" && \\
+set Worldsbedrock="${src.bedrockWorlds}" && \\
+set JLauncher="${src.JLauncher}" && \\
+resources/scripts/install.bat`:
+                `sh -c '\\
 isjava="${src.java}" \\
 isbedrock="${src.bedrock}" \\
 javaFolder="${src.javaFolder}" \\
@@ -666,7 +681,7 @@ bedrockFolder="${src.bedrockFolder}" \\
 javaWorlds="${src.javaWorlds}" \\
 bedrockWorlds="${src.bedrockWorlds}" \\
 JLauncher="${src.JLauncher}" \\
-resources/scripts/install'`);
+resources/scripts/install.sh'`);
                 if (asd.stdErr) {
                     document.querySelector("#p6>h1").innerHTML = "Đã xảy ra lỗi"
                     document.querySelector("#p6>p").innerHTML = `Cài đặt thất bại! Vui lòng liên hệ với Team Fuho qua <button onclick="openLink('facebook.com/teamfuho')">Fanpage</button>, <button onclick="openLink('teamfuho.net/vi/comm#feedback')">Website</button> hoặc <button onclick="Neutralino.os.open('mailto:teamfuhovietnam@gmail.com')">Email</button> để được hỗ trợ.`

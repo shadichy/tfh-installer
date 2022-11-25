@@ -3,13 +3,15 @@
 # Configure the environment
 workdir=`pwd`
 declare -a target
-target=( "AppImage" "script" )
+target=( "AppImage" "script" "zip" )
 
 declare -a arch
 arch=( "x64" "ia32" )
 
 declare -a os
-os=( "linux" "mac" )
+os=( "linux" "mac" "win" )
+
+alias npm=$(which pnpm || which yarn || which npm)
 
 get_args(){
 	while [[ "$1" ]];do
@@ -109,10 +111,10 @@ get_args(){
 				fi
 				#convert x86_64 to x64; i686, i386, pentium4 to ia32
 				case ${arch_name} in
-					"x86_64")
+					"x86_64"*)
 						arch_name="x64"
 						;;
-					"i686" | "i386" | "pentium4")
+					"i"*"86" | "pentium4")
 						arch_name="ia32"
 						;;
 					*)
@@ -141,7 +143,7 @@ get_args(){
 				shift
 				;;
 			"--version" | "-V")
-				printf "Current binaries version:\t$(neu version | grep 'Neutralinojs bin')\n\t\t\t\t$(neu version | grep 'Neutralinojs cli')\n"
+				printf "Current binaries version:\t$(npm neu version | grep 'Neutralinojs bin')\n\t\t\t\t$(npm neu version | grep 'Neutralinojs cli')\n"
 				printf "Current app version:\t\t$(cat ${workdir}/neutralino.config.json | grep '"version":' | sed 's/  "version": "//g' | sed 's/",//g')\n"
 				exit 0
 				;;
@@ -165,25 +167,23 @@ if [[ ! "$(ls -A ./bin)" ]];then
 	update=true
 fi
 
+# Check if update variable is true then run `neu update`
+if [[ "${update}" == true ]];then
+	printf "\e[1;44mUpdating the binaries...\e[1;m\n"
+	npm install
+	npm neu update
+	npm update
+fi
+
 printf "\e[1;44mCompiling the source...\e[1;m\n"
 node ./index.js ${node_args}
 
 cd out
 
-# Check if update variable is true then run `neu update`
-if [[ "${update}" == true ]];then
-	printf "\e[1;44mUpdating the binaries...\e[1;m\n"
-	neu update
-	# check for yarn/pnpm/npm then run update command
-	if ! pnpm update;then
-		if ! yarn update;then
-			npm update
-		fi
-	fi
-else
-	cp -r ../bin .
-	cp -r ../resources/js/neutralino.js ./resources/js/
-fi
+# else
+cp -r ../bin .
+cp -r ../resources/js/neutralino.js ./resources/js/
+# fi
 
 printf "\e[1;44mBuilding the binaries...\e[1;m\n"
 
@@ -191,23 +191,22 @@ neu build
 
 cd dist/hpvn/
 mv ../../resources/res/pack.png .
-cp ../../../resources/scripts/* .
-chmod +x install
-chmod +x checkmc
-chmod +x neofetch
-chmod +x script.sh
+cp ../../../resources/scripts/*.{sh,bat,cfg} .
+chmod +x *.sh *.bat
 
 for i in "${os[@]}"; do
+	[ "${i}" = "win" ] && bat=*"bat" || bat=""
 	for m in "${arch[@]}";do
 		# if is mac and is 32bit, then skip
 		if [[ "${i}" == "mac" && "${m}" == "ia32" ]];then
 			continue
 		fi
 		# copy binaries from ../../bin to ., rename to hpvn-<os>_<arch>
-		cp -r ../../bin/neutralino-${i}_${m} ./hpvn-${i}_${m}
+		cp ../../bin/neutralino-${i}_${m}${bat:+".exe"} ./hpvn-${i}_${m}${bat:+".exe"}
+		[ "$bat" ] && cp ../../bin/WebView2Loader.dll .
 		for x in "${target[@]}"; do
 			if [ "${x}" = "AppImage" ]; then
-				if [ "${i}" = "mac" ]; then
+				if [[ "macwin" = *"${i}"* ]]; then
 					continue
 				fi
 				current_dir=$(pwd)
@@ -215,7 +214,7 @@ for i in "${os[@]}"; do
 				if [ ! -d "HappyVietnam.AppDir" ]; then
 					mkdir "HappyVietnam.AppDir"
 				fi
-				# convert x64 to x86_64, ia32 to i386
+				# convert x64 to x86_64, ia32 to i686
 				machine=${m//x64/x86_64}
 				machine=${machine//ia32/i686}
 
@@ -231,7 +230,7 @@ for i in "${os[@]}"; do
 cd "\$(dirname "\$0")"
 exec ./hpvn-${i}_${m}
 EOF
-				cp ../../hpvn/hpvn-${i}_${m} .
+				cp ../../hpvn/hpvn-${i}_${m} ../../hpvn/*.sh ../../hpvn/resources.neu ../../hpvn/pack.png ../../../resources/icons/appIcon.png .
 				chmod +x hpvn-${i}_${m}
 				chmod +x AppRun
 				cat << EOF > HappyVietnam.desktop
@@ -246,12 +245,6 @@ X-AppImage-Version=1.0
 X-AppImage-Name=HappyVietnam
 X-AppImage-Arch=${machine}
 EOF
-				cp ../../hpvn/install .
-				cp ../../../resources/icons/appIcon.png .
-				cp ../../hpvn/checkmc .
-				cp ../../hpvn/neofetch .
-				cp ../../hpvn/resources.neu .
-				cp ../../hpvn/pack.png .
 				cd ../
 				[[ ! -f ../appimagetool-${machine}.AppImage ]] && curl -L -o ../appimagetool-${machine}.AppImage https://github.com/AppImage/AppImageKit/releases/latest/download/appimagetool-${machine}.AppImage
 				chmod +x ../appimagetool-${machine}.AppImage
@@ -261,17 +254,24 @@ EOF
 			
 		fi
 		if [ "${x}" = "script" ]; then
-			# if os is mac and arch is ia32 then skip
-			if [ "${i}" = "mac" ] && [ "${m}" = "ia32" ]; then
+			# if os is win or os is mac and arch is ia32 then skip
+			if ([ "${i}" = "mac" ] && [ "${m}" = "ia32" ]) || [ "${i}" = "win" ] ; then
 				continue
 			fi
 			printf "\e[1;44mCreate script for ${i} ${m}\e[1;m\n"
-			tar -zcvf hpvn-${i}_${m}.tar.gz install neofetch checkmc resources.neu hpvn-${i}_${m} pack.png
-			rm -f ../build/hpvn-${i}_${m}.sh
-			cat script.sh | sed -e "s/\${arch}/${m}/g" | sed -e "s/\${os}/${i}/g" > ../build/hpvn-${i}_${m}.sh
-			cat hpvn-${i}_${m}.tar.gz >> ../build/hpvn-${i}_${m}.sh
-			chmod +x ../build/hpvn-${i}_${m}.sh
+			tar -zcvf hpvn-${i}_${m}.tar.gz *.sh *.cfg *.json resources.neu hpvn-${i}_${m} pack.png
+			fname="../build/hpvn-${i}_${m}$([ "${i}" = "mac" ] && printf ".command")"
+			rm -f $fname
+			cat ../../../script.sh | sed -e "s/\${arch}/${m}/g" | sed -e "s/\${os}/${i}/g" > $fname
+			cat hpvn-${i}_${m}.tar.gz >> $fname
+			chmod +x $fname
 			rm -f hpvn-${i}_${m}.tar.gz
+		fi
+		if [ "${x}" = "zip" ]; then
+			printf "\e[1;44mCreate zip archive for ${i} ${m}\e[1;m\n"
+			fname="../build/hpvn-${i}_${m}.zip"
+			rm -f $fname
+			zip -9 $fname *.${bat:-"sh"} *.cfg *.json resources.neu hpvn-${i}_${m}${bat:+".exe"} pack.png ${bat:+"WebView2Loader.dll"}
 		fi
 	done
 	done
@@ -284,12 +284,12 @@ if [ "${clean}" = true ]; then
 	rm -rf ../*.AppImage
 	rm -rf ../../resources/res
 	rm -rf ../../resources/fonts
-	rm -rf ../../resources/icons
+	rm -rf ../../resources/iconscurrent_dir
 	rm -rf ../../resources/index.html
 	rm -rf ../../resources/styles.css
 	rm -rf ../../bin
 fi
 
-printf "\e[1;44mBuilds are made in ${workdir}/out/dist/build\e[1;m\n"
+printf "\e[1;44mBuilds are bundled in ${workdir}/out/dist/build\e[1;m\n"
 printf "\e[1;44mDone!\e[1;m\n"
 cd ${workdir}

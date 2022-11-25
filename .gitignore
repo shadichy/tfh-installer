@@ -1,5 +1,6 @@
 # Developer tools' files
 .lite_workspace.lua
+.vscode
 
 # Neutralinojs binaries and builds
 /dist
@@ -12,7 +13,8 @@
 /out/dist/build/*
 !/out/dist/build/.empty
 
-/out/dist/hpvn/
+/out/dist/hpvn/*
+!/out/dist/hpvn/.empty
 
 /out/resources/fonts
 /out/resources/icons

@@ -4,7 +4,9 @@
   "description": "Happy Vietnam Installer",
   "main": "index.js",
   "scripts": {
-    "build": "./build.sh"
+    "build": "./build.sh",
+    "run": "neu run",
+    "binupdate": "neu update"
   },
   "repository": {
     "type": "git",
@@ -17,13 +19,13 @@
   },
   "homepage": "https://github.com/shadichy/tfh-installer#readme",
   "dependencies": {
-    "@neutralinojs/neu": "^9.3.0",
-    "bash-converter": "^2.3.0",
-    "csso": "^5.0.3",
+    "@neutralinojs/neu": "^9.3.1",
+    "bash-converter": "^2.4.1",
+    "csso": "^5.0.5",
     "fs": "^0.0.1-security",
     "html-minifier": "^4.0.0",
     "node-json-minify": "^3.0.0",
     "path": "^0.12.7",
-    "terser": "^5.12.1"
+    "terser": "^5.15.1"
   }
 }
